@@ -1,8 +1,12 @@
-from PyQt5.QtCore import Qt
+from PyQt5.QtCore import Qt, QThreadPool
 from PyQt5.QtWidgets import QTableWidget, QTableWidgetItem, QMenu, QAction, QFileDialog, QHeaderView, QStyle, \
     QWidget, QVBoxLayout, QAbstractItemView, QStyledItemDelegate
 
 from button import Button
+from file_processor import FileProcessor, Worker
+from settings_manager import SettingsManager
+
+import multiprocessing
 
 
 # Delegate para impedir a seleção e o realce de colunas específicas
@@ -27,8 +31,9 @@ class ListWidget(QTableWidget):
         self.setShowGrid(False)
         self.setColumnWidth(0, 25)
         self.setColumnWidth(3, 40)
+        self.settings = SettingsManager()
 
-        # Tornar colunas especídicas expansíveis
+        # Tornar colunas específicas expansíveis
         header = self.horizontalHeader()
         header.setSectionResizeMode(1, QHeaderView.Stretch)
         header.setSectionResizeMode(2, QHeaderView.Stretch)
@@ -124,8 +129,76 @@ class ListWidget(QTableWidget):
             item = self.item(row, 0)
             item.setText(str(item_number))
 
+    # Pegar os itens da lista e processar os arquivos de áudio
+    def process_sounds(self):
+        if int(self.rowCount()) == 0:
+            return
+
+        sett = self.settings.load_audd_api_key()
+        if sett is None or sett == '':
+            return
+
+        self.check_and_stop_threadpool()
+
+        # Multiprocessamento para processar a lista
+        thread_pool = QThreadPool.globalInstance()
+        thread_pool.setMaxThreadCount(multiprocessing.cpu_count())
+        processor = FileProcessor()
+        processor.return_json.connect(self.file_tagger)
+        processor.return_process.connect(self.update_table)
+
+        for row in range(self.rowCount()):
+            item = self.item(row, 1)
+            if item is not None:
+                self.update_table(self.tr('Start') + '...', row)
+
+                worker = Worker(processor, item.text(), row)
+                thread_pool.start(worker)
+
+    # Função para finalizar o processo conforme o resultado das requisições
+    def file_tagger(self, result, row):
+        print(result)
+        self.update_table(self.tr('Search Finished') + '!', row)
+
+        if result.get('status') == 'success' and not result.get('result') is None:
+
+            result_dict = result['result']
+            normalized_keys = {key.lower(): value for key, value in result_dict.items()}
+
+            artist = normalized_keys.get('artist')
+            title = normalized_keys.get('title')
+            album = normalized_keys.get('album')
+
+            text = ''
+            if artist:
+                text = str(artist)
+            if title:
+                if artist:
+                    text += ' - '
+                text += str(title)
+            if album:
+                if title or artist:
+                    text += ' --- ' + self.tr('Album') + ': '
+                text += str(album)
+
+            self.update_table(self.tr('Found Music') + ' ( ' + text + ' )', row)
+
+        else:
+            self.update_table(self.tr('Music Not Found!'), row)
+
+    # Atualizar informações da tabela
+    def update_table(self, text, row):
+        item = self.item(row, 2)
+        item.setText(text)
+
+    # Verificação para finalizar o processamento atual antes de iniciar outros processos
+    @staticmethod
+    def check_and_stop_threadpool():
+        thread_pool = QThreadPool.globalInstance()
+        if thread_pool.activeThreadCount() > 0:
+            thread_pool.clear()
+
     # Evento para gerar o menu de contexto para os arquivos na lista
-    # noinspection PyUnresolvedReferences
     def contextMenuEvent(self, event):
 
         if self.rowCount() == 0:

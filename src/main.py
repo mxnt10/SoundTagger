@@ -55,7 +55,7 @@ class SoundTaggerApp(QMainWindow):
         clean = Button('clean', self.tr('Remove Selected Files'))
         clean.clicked.connect(list_widget.clear_items)
         run = Button('run', self.tr('Run Process'))
-        # run.clicked.connect()
+        run.clicked.connect(list_widget.process_sounds)
         main = Button('main', self.tr('Return to Main'))
         main.clicked.connect(self.get_main)
         settings = Button('settings', self.tr('Settings'))
