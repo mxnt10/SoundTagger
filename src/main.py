@@ -10,6 +10,7 @@ from list import ListWidget
 from settings import Settings
 from translator import Translator
 from theme import Theme
+from run_options import RunOptions
 
 import sys
 
@@ -28,9 +29,12 @@ class SoundTaggerApp(QMainWindow):
         self.setCentralWidget(main_widget)
 
         # Definição e ajuste da lista
+        self.run_options = RunOptions()
         list_widget = ListWidget()
+        list_widget.setWidgetEvent(self.run_options)
         list_layout = HBoxLayout(9)
         list_layout.addWidget(list_widget)
+        self.run_options.run.connect(list_widget.process_sounds)
 
         # Widget da lista para o QStackedWidget
         table = QWidget()
@@ -54,8 +58,9 @@ class SoundTaggerApp(QMainWindow):
         remove.clicked.connect(list_widget.remove_selected_items)
         clean = Button('clean', self.tr('Remove Selected Files'))
         clean.clicked.connect(list_widget.clear_items)
-        run = Button('run', self.tr('Run Process'))
-        run.clicked.connect(list_widget.process_sounds)
+        self.run = Button('run', self.tr('Run Process'))
+        self.run.height.connect(self.run_options.set_point)
+        self.run.clicked.connect(self.run_options.show)
         main = Button('main', self.tr('Return to Main'))
         main.clicked.connect(self.get_main)
         settings = Button('settings', self.tr('Settings'))
@@ -78,7 +83,7 @@ class SoundTaggerApp(QMainWindow):
         list_buttons.addWidget(add)
         list_buttons.addWidget(remove)
         list_buttons.addWidget(clean)
-        list_buttons.addWidget(run)
+        list_buttons.addWidget(self.run)
 
         # Ajuste dos botões
         self.v_buttons = QWidget()
@@ -133,6 +138,26 @@ class SoundTaggerApp(QMainWindow):
         self.stack.setCurrentIndex(2)
         self.v_buttons.setVisible(False)
         self.v_main.setVisible(True)
+
+    # Por enquanto vai servir
+    def moveEvent(self, event):
+        if not self.run_options.isHidden():
+            self.run_options.set_resize(self.run.mapToGlobal(self.run.pos()))
+
+    # Ação ao redirecionar a janela, o diágolo de opções pode variar de posição
+    def resizeEvent(self, event):
+        if not self.run_options.isHidden():
+            self.run_options.set_resize(self.run.mapToGlobal(self.run.pos()))
+
+    # Para fechar o diálogo ao clicar na interface
+    def mouseReleaseEvent(self, event):
+        if not self.run_options.isHidden():
+            self.run_options.close()
+
+    # Se tiver algo pendente, finalizar
+    def closeEvent(self, event):
+        self.run_options.close()
+        event.accept()
 
 
 if __name__ == '__main__':

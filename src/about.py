@@ -8,6 +8,6 @@ class About(QWidget):
         super().__init__()
 
         layout = GridLayout(None, 0)
-        layout.addWidget(QLabel(' SoundTagger v1.0 alpha'), 0, 0)
+        layout.addWidget(QLabel(' SoundTagger v1.0 beta2'), 0, 0)
 
         self.setLayout(layout)

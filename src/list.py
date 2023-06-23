@@ -1,21 +1,14 @@
+import multiprocessing
+
 from PyQt5.QtCore import Qt, QThreadPool
-from PyQt5.QtWidgets import QTableWidget, QTableWidgetItem, QMenu, QAction, QFileDialog, QHeaderView, QStyle, \
-    QWidget, QVBoxLayout, QAbstractItemView, QStyledItemDelegate
+from PyQt5.QtWidgets import QTableWidget, QTableWidgetItem, QMenu, QAction, QFileDialog, QHeaderView, QWidget, \
+    QVBoxLayout, QAbstractItemView
 
 from button import Button
 from file_processor import FileProcessor, Worker
+from list_delegate import ListDelegate
+from music_tagger import MusicTagger
 from settings_manager import SettingsManager
-
-import multiprocessing
-
-
-# Delegate para impedir a seleção e o realce de colunas específicas
-class CustomDelegate(QStyledItemDelegate):
-    def paint(self, painter, option, index):
-        option.state &= ~QStyle.State_MouseOver
-        if index.column() != 1:
-            option.state &= ~QStyle.State_Selected
-        super().paint(painter, option, index)
 
 
 # Classe que vai listar os arquivos multimídia
@@ -39,7 +32,7 @@ class ListWidget(QTableWidget):
         header.setSectionResizeMode(2, QHeaderView.Stretch)
 
         # Estilização da lista
-        self.setItemDelegate(CustomDelegate())
+        self.setItemDelegate(ListDelegate())
         self.setStyleSheet('QTableWidget { border: none; background-color: transparent; }'
                            'QScrollBar { border: none; background-color: transparent; width: 12px; }'
                            'QScrollBar::handle { background-color: #777; min-height: 12px; border-radius: 6px; }'
@@ -47,6 +40,7 @@ class ListWidget(QTableWidget):
                            'QScrollBar::add-page, QScrollBar::sub-page { background: none; }')
 
         self.current_item_index = None  # Índice do item atualmente selecionado
+        self.widget_event = None
 
     # Adicionar os arquivos de áudio na lista
     def add_item(self):
@@ -157,7 +151,6 @@ class ListWidget(QTableWidget):
 
     # Função para finalizar o processo conforme o resultado das requisições
     def file_tagger(self, result, row):
-        print(result)
         self.update_table(self.tr('Search Finished') + '!', row)
 
         if result.get('status') == 'success' and not result.get('result') is None:
@@ -176,6 +169,7 @@ class ListWidget(QTableWidget):
                 if artist:
                     text += ' - '
                 text += str(title)
+            txt = text
             if album:
                 if title or artist:
                     text += ' --- ' + self.tr('Album') + ': '
@@ -183,12 +177,21 @@ class ListWidget(QTableWidget):
 
             self.update_table(self.tr('Found Music') + ' ( ' + text + ' )', row)
 
+            if self.settings.load_rename_file() == 2:
+                file = self.item(row, 1)
+                rename = MusicTagger.rename_file(file.text(), txt)
+                self.update_table(rename, row, 1)
+
+            if self.settings.load_file_tagger() == 2:
+                file = self.item(row, 1)
+                MusicTagger.apply_tags(file.text(), artist, title, album)
+
         else:
             self.update_table(self.tr('Music Not Found!'), row)
 
     # Atualizar informações da tabela
-    def update_table(self, text, row):
-        item = self.item(row, 2)
+    def update_table(self, text, row, col=2):
+        item = self.item(row, col)
         item.setText(text)
 
     # Verificação para finalizar o processamento atual antes de iniciar outros processos
@@ -197,6 +200,10 @@ class ListWidget(QTableWidget):
         thread_pool = QThreadPool.globalInstance()
         if thread_pool.activeThreadCount() > 0:
             thread_pool.clear()
+
+    # Widget para fechar ao pressionar a interface atual
+    def setWidgetEvent(self, widget):
+        self.widget_event = widget
 
     # Evento para gerar o menu de contexto para os arquivos na lista
     def contextMenuEvent(self, event):
@@ -217,3 +224,8 @@ class ListWidget(QTableWidget):
 
         menu.addAction(remove_selected_action)
         menu.exec_(event.globalPos())
+
+    # Evento para fechar o widget selecionado ao pressionar a interface principal
+    def mouseReleaseEvent(self, event):
+        if not self.widget_event.isHidden():
+            self.widget_event.close()

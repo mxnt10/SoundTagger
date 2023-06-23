@@ -1,4 +1,4 @@
-from PyQt5.QtCore import QSize, Qt
+from PyQt5.QtCore import QSize, Qt, pyqtSignal, QPoint
 from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import QPushButton
 import os
@@ -6,6 +6,8 @@ import os
 
 # Classe para os botões
 class Button(QPushButton):
+    height = pyqtSignal(QPoint)
+
     def __init__(self, txt, tooltip, nm=36):
         self.text = txt
         self.tooltip = tooltip
@@ -57,6 +59,7 @@ class Button(QPushButton):
     # Ação ao posicionar o mouse sobre o botão
     def enterEvent(self, event):
         self.setIconSize(QSize(self.nm + 4, self.nm + 4))
+        self.height.emit(self.mapToGlobal(self.pos()))
         super().enterEvent(event)
 
     # Ação ao tirar o mouse sobre o botão

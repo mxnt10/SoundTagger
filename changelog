@@ -1,9 +1,11 @@
+release beta2 - 2023/06/23:
+- Feature to add tags and rename files.
 release beta version - 2023/06/18:
 - Using the AudD API.
-- Adding more sources.
+- Added more sources.
 - Multiprocessing bug fixing.
 release alpha version - 2023/06/11:
-- Adding backgrounds.
-- Adding icons.
-- Adding sources.
-- Adding LICENCE, README.md and icon to common.
+- Added backgrounds.
+- Added icons.
+- Added sources.
+- Added LICENCE, README.md and icon to common.
