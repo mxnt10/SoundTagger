@@ -1,17 +1,18 @@
-from PyQt5.QtCore import QSize, Qt, pyqtSignal, QPoint
-from PyQt5.QtGui import QIcon
-from PyQt5.QtWidgets import QPushButton
 import os
+
+from PyQt5.QtCore import QSize, Qt, pyqtSignal, QPoint, QEvent
+from PyQt5.QtGui import QIcon, QMouseEvent
+from PyQt5.QtWidgets import QPushButton
 
 
 # Classe para os botões
 class Button(QPushButton):
     height = pyqtSignal(QPoint)
 
-    def __init__(self, txt, tooltip, nm=36):
-        self.text = txt
+    def __init__(self, text, tooltip, size=36):
+        self.text = text
         self.tooltip = tooltip
-        self.nm = nm
+        self.nm = size
         self.def_icon = "/usr/share/SoundTagger/icons"
         self.rel_icon = os.path.abspath("../icons")
         self.alt_icon = os.path.abspath("icons")
@@ -57,24 +58,25 @@ class Button(QPushButton):
         return self.default_icon(txt)
 
     # Ação ao posicionar o mouse sobre o botão
-    def enterEvent(self, event):
+    def enterEvent(self, event: QEvent) -> None:
         self.setIconSize(QSize(self.nm + 4, self.nm + 4))
         self.height.emit(self.mapToGlobal(self.pos()))
         super().enterEvent(event)
 
     # Ação ao tirar o mouse sobre o botão
-    def leaveEvent(self, event):
+    def leaveEvent(self, event: QEvent) -> None:
         self.setIconSize(QSize(self.nm, self.nm))
         super().leaveEvent(event)
 
     # Ação ao pressionar o botão
-    def mousePressEvent(self, event):
+    def mousePressEvent(self, event: QMouseEvent) -> None:
         if event.button() == 1:
             self.setIconSize(QSize(self.nm + 2, self.nm + 2))
         super().mousePressEvent(event)
 
     # Ação ao despressionar o botão representando um clique completo
-    def mouseReleaseEvent(self, event):
+    def mouseReleaseEvent(self, event: QMouseEvent) -> None:
         if event.button() == 1:
             self.setIconSize(QSize(self.nm + 4, self.nm + 4))
         super().mouseReleaseEvent(event)
+

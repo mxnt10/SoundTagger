@@ -6,7 +6,7 @@ conforme os resultados obtidos.
  
 ### Recursos do Programa
 
-| Recursos implementados                                  | ✔ ok  ❌ no  ➕ next  ➖ unstable |
+| Recursos Implementados                                  | ✔ Ok  ❌ No  ➕ Next  ➖ Unstable |
 |---------------------------------------------------------|:------------------------------:|
 | Pesquisa de som via arquivos de áudio                   |               ✔                |
 | Pesquisa de som via escuta ( microfone )                |               ❌                |
@@ -27,3 +27,16 @@ conforme os resultados obtidos.
 | Opção de customizar o plano de fundo do programa        |               ❌                |
 | Ajuste das opções de multiprocessamento                 |               ❌                |
 | Ajustes indivíduais para cada arquivo se necessário     |               ❌                |
+
+|              Dependências do Programa | Versão Usada | ✔ Incluso ➕ Faltante ➖ Sistema |
+|--------------------------------------:|:------------:|:------------------------------:|
+|                               mutagen |    1.46.0    |               ✔                |
+|                            pyacoustid |    1.2.2     |               ➕                |
+|                                 pydub |    0.25.1    |               ✔                |
+|                                 PyQt5 |    5.15.2    |               ➕                |
+|                               superqt |    0.4.1     |               ➕                |
+|                           qt5 (PyQt5) |    5.15.3    |               ➕                |
+|              chromaprint (pyacoustid) |    1.5.1     |               ➕                |
+|                        ffmpeg (pydub) |    4.4.1     |               ➕                |
+|       requests (presente nas distros) |    2.26.0    |               ➖                |
+|  python (nem precisaria citar mas...) |    3.9.10    |               ➖                |

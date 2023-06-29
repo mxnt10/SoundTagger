@@ -1,16 +1,26 @@
-from PyQt5.QtCore import pyqtSignal, QObject, QRunnable
-from audd_api import audDAPI
-from pydub import AudioSegment
 import tempfile
 
+from PyQt5.QtCore import pyqtSignal, QObject
 
+from audd_api import audDAPI
+from pydub import AudioSegment
+from settings_manager import SettingsManager
+
+
+# Classe para auxiliar no multiprocessamento
 class FileProcessor(QObject):
     return_json = pyqtSignal(dict, int)
     return_process = pyqtSignal(str, int)
 
+    # Função para iniciar o multiprocessamento incluíndo a preparação da mídia para a busca
     def run(self, audio_path, row) -> None:
+        self.return_process.emit(self.tr('Preparing File') + '...', row)
         audio = AudioSegment.from_file(audio_path)
-        extracted_audio = audio[10000:20000]
+
+        # Extrair parte da mídia para a pesquisa
+        sett = SettingsManager()
+        extracted_audio = audio[sett.load_int_config('initial_range', defaultValue=10) * 1000:
+                                sett.load_int_config('final_range', defaultValue=20) * 1000]
 
         with tempfile.NamedTemporaryFile(suffix="." + audio_path.split(".")[-1], delete=False) as temp_file:
             temp_file = temp_file.name
@@ -21,14 +31,3 @@ class FileProcessor(QObject):
             audd_api.processing.connect(lambda process, nm: self.return_process.emit(process, nm))
 
             audd_api.process(temp_file, row)
-
-
-class Worker(QRunnable):
-    def __init__(self, file_processor, file_name, row):
-        super().__init__()
-        self.file_processor = file_processor
-        self.file_name = file_name
-        self.row = row
-
-    def run(self) -> None:
-        self.file_processor.run(self.file_name, self.row)

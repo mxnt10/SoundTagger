@@ -1,11 +1,11 @@
+from time import sleep
+
 import requests
 from PyQt5.QtCore import QObject, pyqtSignal
-from time import sleep
 
 from settings_manager import SettingsManager
 
 DEBUG = False
-# DEBUG = True
 
 
 # Objeto para o uso da API do audD.io
@@ -16,7 +16,7 @@ class audDAPI(QObject):
     def __init__(self):
         super().__init__()
 
-    def process(self, item, row):
+    def process(self, item, row) -> None:
         settings = SettingsManager()
 
         try:
@@ -34,11 +34,11 @@ class audDAPI(QObject):
             else:
 
                 data = {
-                    'api_token': str(settings.load_audd_api_key()),
+                    'api_token': str(settings.load_audd_api_key()),  # fixme
                     'return': '',
                 }
                 files = {
-                    'file': open(item, 'rb'),
+                    'file': open(item, 'rb'),  # fixme
                 }
                 result = requests.post('https://api.audd.io/', data=data, files=files)
                 self.finished.emit(result.json(), row)

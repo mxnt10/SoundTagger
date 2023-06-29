@@ -1,6 +1,7 @@
-from PyQt5.QtCore import QObject
-import random
 import os
+import random
+
+from PyQt5.QtCore import QObject
 
 
 # Classe para gerar uma folha de estilo para servir como plano de fundo

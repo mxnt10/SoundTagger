@@ -1,6 +1,8 @@
-from PyQt5.QtCore import QObject
-from mutagen.easyid3 import EasyID3
 import os
+
+from PyQt5.QtCore import QObject
+
+from mutagen.easyid3 import EasyID3
 
 
 # Classe para taggear as músicas e renomear se possível
@@ -10,7 +12,7 @@ class MusicTagger(QObject):
 
     # Função para editar as tags
     @staticmethod
-    def apply_tags(file_path, artist, title, album):
+    def apply_tags(file_path, artist, title, album) -> None:
         audio = EasyID3(file_path)
         audio['title'] = title
         audio['artist'] = artist

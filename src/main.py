@@ -1,3 +1,6 @@
+import sys
+
+from PyQt5.QtGui import QMouseEvent, QResizeEvent, QCloseEvent
 from PyQt5.QtWidgets import QApplication, QWidget, QVBoxLayout, QMainWindow, QDesktopWidget, QStackedWidget
 
 from about import About
@@ -7,12 +10,10 @@ from gridlayout import GridLayout
 from hboxlayout import HBoxLayout
 from icon import IconPrg
 from list import ListWidget
-from settings import Settings
-from translator import Translator
-from theme import Theme
 from run_options import RunOptions
-
-import sys
+from settings import Settings
+from theme import Theme
+from translator import Translator
 
 
 # Classe da interface principal
@@ -108,7 +109,7 @@ class SoundTaggerApp(QMainWindow):
         buttons.addWidget(f_buttons)
 
         # Ajustes do layout dos botões
-        buttons_layout = GridLayout(None, 0)
+        buttons_layout = GridLayout(n=0)
         buttons_layout.addLayout(buttons, 0, 0)
 
         # Layout principal
@@ -122,40 +123,41 @@ class SoundTaggerApp(QMainWindow):
         self.move(qr.topLeft())
 
     # Painel principal
-    def get_main(self):
+    def get_main(self) -> None:
         self.stack.setCurrentIndex(0)
         self.v_buttons.setVisible(True)
         self.v_main.setVisible(False)
 
     # Painel sobre
-    def get_about(self):
+    def get_about(self) -> None:
         self.stack.setCurrentIndex(1)
         self.v_buttons.setVisible(False)
         self.v_main.setVisible(True)
 
     # Painel de configurações
-    def get_settings(self):
+    def get_settings(self) -> None:
         self.stack.setCurrentIndex(2)
         self.v_buttons.setVisible(False)
         self.v_main.setVisible(True)
 
     # Por enquanto vai servir
-    def moveEvent(self, event):
+    def moveEvent(self, event):  # fixme
         if not self.run_options.isHidden():
             self.run_options.set_resize(self.run.mapToGlobal(self.run.pos()))
 
     # Ação ao redirecionar a janela, o diágolo de opções pode variar de posição
-    def resizeEvent(self, event):
+    def resizeEvent(self, event: QResizeEvent) -> None:
         if not self.run_options.isHidden():
             self.run_options.set_resize(self.run.mapToGlobal(self.run.pos()))
 
     # Para fechar o diálogo ao clicar na interface
-    def mouseReleaseEvent(self, event):
+    def mouseReleaseEvent(self, event: QMouseEvent) -> None:
         if not self.run_options.isHidden():
             self.run_options.close()
+        super().mouseReleaseEvent(event)
 
     # Se tiver algo pendente, finalizar
-    def closeEvent(self, event):
+    def closeEvent(self, event: QCloseEvent) -> None:
         self.run_options.close()
         event.accept()
 

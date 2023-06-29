@@ -1,6 +1,7 @@
-from PyQt5.QtWidgets import QApplication
-from PyQt5.QtCore import QTranslator, QObject, QLocale
 import os
+
+from PyQt5.QtCore import QTranslator, QObject, QLocale
+from PyQt5.QtWidgets import QApplication
 
 
 # Classe para pesquisar o local que vai ficar a tradução
