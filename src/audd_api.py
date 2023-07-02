@@ -3,6 +3,7 @@ from time import sleep
 import requests
 from PyQt5.QtCore import QObject, pyqtSignal
 
+from notification import Notification
 from settings_manager import SettingsManager
 
 DEBUG = False
@@ -34,14 +35,18 @@ class audDAPI(QObject):
             else:
 
                 data = {
-                    'api_token': str(settings.load_audd_api_key()),  # fixme
-                    'return': '',
+                    'api_token': str(settings.load_api_key('audD_API')),
+                    'return': ''
                 }
                 files = {
-                    'file': open(item, 'rb'),  # fixme
+                    'file': open(item, 'rb')
                 }
                 result = requests.post('https://api.audd.io/', data=data, files=files)
                 self.finished.emit(result.json(), row)
 
         except Exception as msg:
-            self.processing.emit(self.tr('Error') + ': ' + str(msg), row)
+            Notification.notify_send(app_title=self.tr('Error'),
+                                     title=str(),
+                                     message=str(msg),
+                                     icon='error',
+                                     timeout=10)

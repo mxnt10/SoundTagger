@@ -10,8 +10,10 @@ from gridlayout import GridLayout
 from hboxlayout import HBoxLayout
 from icon import IconPrg
 from list import ListWidget
+from notification import Notification
 from run_options import RunOptions
 from settings import Settings
+from settings_manager import SettingsManager
 from theme import Theme
 from translator import Translator
 
@@ -61,7 +63,7 @@ class SoundTaggerApp(QMainWindow):
         clean.clicked.connect(list_widget.clear_items)
         self.run = Button('run', self.tr('Run Process'))
         self.run.height.connect(self.run_options.set_point)
-        self.run.clicked.connect(self.run_options.show)
+        self.run.clicked.connect(self.show_options)
         main = Button('main', self.tr('Return to Main'))
         main.clicked.connect(self.get_main)
         settings = Button('settings', self.tr('Settings'))
@@ -140,8 +142,18 @@ class SoundTaggerApp(QMainWindow):
         self.v_buttons.setVisible(False)
         self.v_main.setVisible(True)
 
+    def show_options(self):
+        s = SettingsManager()
+        if s.priority_api() is not None:
+            self.run_options.show()
+        else:
+            Notification.notify_send(app_title=self.tr('Information'),
+                                     title=self.tr('Configure an API Key'),
+                                     message=self.tr('No API Key has been configured!'),
+                                     icon='key')
+
     # Por enquanto vai servir
-    def moveEvent(self, event):  # fixme
+    def moveEvent(self, event):
         if not self.run_options.isHidden():
             self.run_options.set_resize(self.run.mapToGlobal(self.run.pos()))
 

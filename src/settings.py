@@ -1,4 +1,5 @@
-from PyQt5.QtWidgets import QWidget, QVBoxLayout, QLabel, QLineEdit, QHBoxLayout
+from PyQt5.QtCore import Qt
+from PyQt5.QtWidgets import QWidget, QVBoxLayout, QLabel, QLineEdit, QHBoxLayout, QListWidget, QListWidgetItem
 
 from gridlayout import GridLayout
 from settings_manager import SettingsManager
@@ -10,23 +11,61 @@ class Settings(QWidget):
         super().__init__()
         self.settings = SettingsManager()
 
+        # Lista de prioridade de uso das APIs
+        self.list_widget = QListWidget()
+        self.list_widget.setDragDropMode(QListWidget.InternalMove)
+        self.list_widget.setFixedSize(300, 100)
+
+        for i in self.settings.load_priorities_API().split(':'):
+            self.list_widget.addItem(QListWidgetItem(i))
+
+        self.list_widget.model().rowsMoved.connect(self.onCurrentRowChanged)
+
         # Configuração das APIs
         audd_api_text = QLineEdit()
-        audd_api_text.textChanged.connect(self.changeValues)
+        audd_api_text.setText(str(self.settings.load_api_key('audD_API')))
+        audd_api_text.textChanged.connect(lambda val: self.changeValues('audD_API', val))
+        acoustid_api_text = QLineEdit()
+        acoustid_api_text.setText(str(self.settings.load_api_key('acoustID_API')))
+        acoustid_api_text.textChanged.connect(lambda val: self.changeValues('acoustID_API', val))
 
-        if self.settings.load_audd_api_key() is not None:
-            audd_api_text.setText(self.settings.load_audd_api_key())
+        # Labels
+        audd_text = QLabel(self.tr('audD API Token'))
+        audd_text.setAlignment(Qt.AlignRight)
+        audd_text.setMinimumWidth(120)
+        acoustid_text = QLabel(self.tr('AcoustID API Key'))
+        acoustid_text.setAlignment(Qt.AlignRight)
+        acoustid_text.setMinimumWidth(120)
+        priority_text = QLabel(self.tr('Priority'))
+        priority_text.setAlignment(Qt.AlignRight | Qt.AlignTop)
+        priority_text.setMinimumWidth(120)
+
+        # Layout da lista de prioridade
+        list_layout = QHBoxLayout()
+        list_layout.addWidget(priority_text)
+        list_layout.addWidget(self.list_widget)
+        list_layout.addStretch(1)
 
         # Layout para a API do audD
         audd_api = QHBoxLayout()
-        audd_api.addWidget(QLabel('audD API Token'))
+        audd_api.addWidget(audd_text)
         audd_api.addWidget(audd_api_text)
+
+        # Layout para a API do AcoustID
+        acoustid_api = QHBoxLayout()
+        acoustid_api.addWidget(acoustid_text)
+        acoustid_api.addWidget(acoustid_api_text)
 
         # Layout para posicionar os widgets
         layout = QVBoxLayout()
         layout.setContentsMargins(15, 5, 15, 5)
         layout.addSpacing(20)
+        layout.addLayout(list_layout)
+        layout.addSpacing(20)
         layout.addLayout(audd_api)
+        layout.addSpacing(20)
+        layout.addLayout(acoustid_api)
+        layout.addSpacing(20)
         layout.addStretch(1)
 
         # layout para inserir o fundo
@@ -36,7 +75,12 @@ class Settings(QWidget):
         self.setLayout(main_layout)
 
     # Alterar a configuração chave da API audD
-    def changeValues(self, text):
-        if self.settings.load_audd_api_key() == text:
+    def changeValues(self, key, text):
+        if self.settings.load_api_key(key) == text:
             return
-        self.settings.save_audd_api_key(text)
+        self.settings.save_api_key(key, text)
+
+    # Salvando a lista de prioridade das APIs
+    def onCurrentRowChanged(self):
+        order = ":".join([self.list_widget.item(i).text() for i in range(self.list_widget.count())])
+        self.settings.save_priorities_API(order)

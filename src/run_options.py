@@ -21,6 +21,7 @@ class RunOptions(QWidget):
 
         self.settings = SettingsManager()
         self.point = None
+        self.w = 280
 
         run = Button('run', self.tr('Run Process'))
         run.clicked.connect(self.close_continue)
@@ -37,13 +38,6 @@ class RunOptions(QWidget):
         addnum.setFocusPolicy(Qt.NoFocus)
         addnum.stateChanged.connect(lambda val: self.settings.save_int_config('file_addnum', val))
 
-        rangeslider = QLabeledRangeSlider(Qt.Orientation.Horizontal)
-        rangeslider.setFixedWidth(200)
-        rangeslider.setRange(0, 60)
-        rangeslider.setValue((self.settings.load_int_config('initial_range', defaultValue=10),
-                              self.settings.load_int_config('final_range', defaultValue=20)))
-        rangeslider.valueChanged.connect(self.save_range_position)
-
         if self.settings.load_int_config('rename_file') == __TRUE__:
             rename.setChecked(True)
         if self.settings.load_int_config('file_tagger') == __TRUE__:
@@ -55,7 +49,15 @@ class RunOptions(QWidget):
         layoutck.addWidget(rename)
         layoutck.addWidget(tagger)
         layoutck.addWidget(addnum)
-        layoutck.addWidget(rangeslider)
+
+        # Slider para selecionar parte da mídia para a busca
+        self.rangeslider: QWidget = QLabeledRangeSlider(Qt.Horizontal)
+        self.rangeslider.setFixedWidth(200)
+        self.rangeslider.setRange(0, 60)
+        self.rangeslider.setValue((self.settings.load_int_config('initial_range', defaultValue=10),
+                                   self.settings.load_int_config('final_range', defaultValue=20)))
+        self.rangeslider.valueChanged.connect(self.save_range_position)
+        layoutck.addWidget(self.rangeslider)
 
         layoutbtn = HBoxLayout(10)
         layoutbtn.addLayout(layoutck)
@@ -73,11 +75,18 @@ class RunOptions(QWidget):
 
     # QPoint usado para o mover a janela
     def set_point(self, point) -> None:
+        if self.settings.priority_api() == 'acoustID':
+            self.rangeslider.setVisible(False)
+            self.w = 240
+        else:
+            self.rangeslider.setVisible(True)
+            self.w = 280
+
         self.point = point
 
     # Função para mover a janela conforme a interface
     def set_resize(self, pos) -> None:
-        self.move(pos.x() - 240, pos.y() + 42)
+        self.move(pos.x() - self.w, pos.y() + 42)
         self.show()
 
     # Emissão para avisar o programa que é para executar a busca ao fechar o diálogo

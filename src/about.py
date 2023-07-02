@@ -7,7 +7,7 @@ from icon import IconPrg
 from label_layout import LabelLayout
 from vboxlayout import VBoxLayout
 
-VERSION = '1.0 pre-release 1'
+VERSION = '1.0 pre-release 2'
 
 
 # Software que usa uma API de impressão digital acústica para buscar metadados
