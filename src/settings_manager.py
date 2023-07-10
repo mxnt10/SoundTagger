@@ -1,7 +1,5 @@
 from PyQt5.QtCore import QSettings
 
-from list_enum import __FALSE__
-
 
 # Classe para gerenciar as configurações do programa
 class SettingsManager:
@@ -16,7 +14,7 @@ class SettingsManager:
         return None
 
     # Salvar o valor da api audd
-    def save_api_key(self, key, api_key):
+    def save_api_key(self, key, api_key) -> None:
         self.settings.setValue(key, api_key)
         self.settings.sync()
 
@@ -25,8 +23,14 @@ class SettingsManager:
         return self.settings.value(key, defaultValue=str())
 
     # Carregar configurações de valores numéricos
-    def load_int_config(self, key, defaultValue=__FALSE__):
+    def load_int_config(self, key, defaultValue=0):
         return int(self.settings.value(key, defaultValue=defaultValue))
+
+    # Conversão de int para bool para checkbox
+    def load_int_convert_bool(self, key):
+        if self.load_int_config(key) == 2:
+            return True
+        return False
 
     # Salvar configurações de valores numéricos
     def save_int_config(self, key, val) -> None:
@@ -38,6 +42,6 @@ class SettingsManager:
         return self.settings.value('Priorities_API', defaultValue='acoustID:audD')
 
     # Salvar lista de prioridades das APIs
-    def save_priorities_API(self, val):
+    def save_priorities_API(self, val) -> None:
         self.settings.setValue('Priorities_API', val)
         self.settings.sync()

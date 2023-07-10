@@ -1,8 +1,9 @@
 from PyQt5.QtCore import Qt
-from PyQt5.QtWidgets import QWidget, QVBoxLayout, QLabel, QLineEdit, QHBoxLayout, QListWidget, QListWidgetItem
+from PyQt5.QtWidgets import QWidget, QVBoxLayout, QLabel, QLineEdit, QListWidget, QListWidgetItem
 
 from gridlayout import GridLayout
 from settings_manager import SettingsManager
+from hboxlayout import HBoxLayout
 
 
 # Classe para as configurações
@@ -41,20 +42,14 @@ class Settings(QWidget):
         priority_text.setMinimumWidth(120)
 
         # Layout da lista de prioridade
-        list_layout = QHBoxLayout()
-        list_layout.addWidget(priority_text)
-        list_layout.addWidget(self.list_widget)
+        list_layout = HBoxLayout(array_widgets=[priority_text, self.list_widget])
         list_layout.addStretch(1)
 
         # Layout para a API do audD
-        audd_api = QHBoxLayout()
-        audd_api.addWidget(audd_text)
-        audd_api.addWidget(audd_api_text)
+        audd_api = HBoxLayout(array_widgets=[audd_text, audd_api_text])
 
         # Layout para a API do AcoustID
-        acoustid_api = QHBoxLayout()
-        acoustid_api.addWidget(acoustid_text)
-        acoustid_api.addWidget(acoustid_api_text)
+        acoustid_api = HBoxLayout(array_widgets=[acoustid_text, acoustid_api_text])
 
         # Layout para posicionar os widgets
         layout = QVBoxLayout()
@@ -68,11 +63,7 @@ class Settings(QWidget):
         layout.addSpacing(20)
         layout.addStretch(1)
 
-        # layout para inserir o fundo
-        main_layout = GridLayout(None, 0)
-        main_layout.addLayout(layout, 0, 0)
-
-        self.setLayout(main_layout)
+        self.setLayout(GridLayout(margin=0, spacing=10, layout=layout))
 
     # Alterar a configuração chave da API audD
     def changeValues(self, key, text):

@@ -1,12 +1,12 @@
 from PyQt5.QtCore import Qt, pyqtSignal
-from PyQt5.QtWidgets import QWidget, QCheckBox, QVBoxLayout
+from PyQt5.QtWidgets import QWidget, QCheckBox
 from superqt import QLabeledRangeSlider
 
 from button import Button
 from gridlayout import GridLayout
 from hboxlayout import HBoxLayout
 from settings_manager import SettingsManager
-from list_enum import __TRUE__
+from vboxlayout import VBoxLayout
 
 
 # Classe para configurar ajustes antes de iniciar a busca
@@ -23,32 +23,25 @@ class RunOptions(QWidget):
         self.point = None
         self.w = 280
 
-        run = Button('run', self.tr('Run Process'))
+        run = Button('apply', self.tr('Run Process'))
         run.clicked.connect(self.close_continue)
 
         rename = QCheckBox(self.tr('Rename'))
         rename.setFocusPolicy(Qt.NoFocus)
+        rename.setChecked(self.settings.load_int_convert_bool('rename_file'))
         rename.stateChanged.connect(lambda val: self.settings.save_int_config('rename_file', val))
 
         tagger = QCheckBox(self.tr('Change Tag Files'))
         tagger.setFocusPolicy(Qt.NoFocus)
+        tagger.setChecked(self.settings.load_int_convert_bool('file_tagger'))
         tagger.stateChanged.connect(lambda val: self.settings.save_int_config('file_tagger', val))
 
         addnum = QCheckBox(self.tr('Maintain File Order'))
         addnum.setFocusPolicy(Qt.NoFocus)
+        addnum.setChecked(self.settings.load_int_convert_bool('file_addnum'))
         addnum.stateChanged.connect(lambda val: self.settings.save_int_config('file_addnum', val))
 
-        if self.settings.load_int_config('rename_file') == __TRUE__:
-            rename.setChecked(True)
-        if self.settings.load_int_config('file_tagger') == __TRUE__:
-            tagger.setChecked(True)
-        if self.settings.load_int_config('file_addnum') == __TRUE__:
-            addnum.setChecked(True)
-
-        layoutck = QVBoxLayout()
-        layoutck.addWidget(rename)
-        layoutck.addWidget(tagger)
-        layoutck.addWidget(addnum)
+        layoutck = VBoxLayout(array_widgets=[rename, tagger, addnum])
 
         # Slider para selecionar parte da mídia para a busca
         self.rangeslider: QWidget = QLabeledRangeSlider(Qt.Horizontal)
@@ -59,15 +52,12 @@ class RunOptions(QWidget):
         self.rangeslider.valueChanged.connect(self.save_range_position)
         layoutck.addWidget(self.rangeslider)
 
-        layoutbtn = HBoxLayout(10)
+        layoutbtn = HBoxLayout(margin=10)
         layoutbtn.addLayout(layoutck)
         layoutbtn.addSpacing(20)
         layoutbtn.addWidget(run)
 
-        layout = GridLayout(rd='12', on_border=True)
-        layout.addLayout(layoutbtn, 0, 0)
-
-        self.setLayout(layout)
+        self.setLayout(GridLayout(layout=layoutbtn, radius='12', on_border=True))
 
     # Ação ao iniciar a interface
     def showEvent(self, event):

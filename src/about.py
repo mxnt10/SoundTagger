@@ -42,7 +42,7 @@ class About(QWidget):
         self.desc7 = LabelLayout(self.tr('Telegram'), '@maurixnovatrento', blue=True)
         self.desc8 = LabelLayout(self.tr('License'), 'GNU General Public License Version 3 (GLPv3)', italic=False)
 
-        lay = VBoxLayout(n=0)
+        lay = VBoxLayout(margin=0)
         lay.setSpacing(0)
         lay.addStretch(1)
         lay.addLayout(self.label)
@@ -66,10 +66,7 @@ class About(QWidget):
             item = lay.itemAt(i)
             item.setAlignment(Qt.AlignCenter)
 
-        layout = GridLayout(n=0)
-        layout.addLayout(lay, 0, 0)
-
-        self.setLayout(layout)
+        self.setLayout(GridLayout(margin=0, layout=lay))
 
     def resizeEvent(self, event: QResizeEvent) -> None:
         s = int(self.size().height() / 4)

@@ -6,8 +6,6 @@ from PyQt5.QtGui import QIcon
 
 # Classe para definir o ícone do programa
 class IconPrg(QObject):
-    def __init__(self):
-        super().__init__()
 
     # Função estática que define o ícone
     @staticmethod
@@ -28,5 +26,5 @@ class IconPrg(QObject):
                 return alt_icon
             return QIcon(alt_icon)
         if string:
-            return str('')
+            return str()
         return QIcon()

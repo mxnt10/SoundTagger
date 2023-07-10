@@ -6,7 +6,7 @@ from mutagen.easyid3 import EasyID3
 
 
 # Classe para taggear as músicas e renomear se possível
-class MusicTagger(QObject):
+class MusicUtils(QObject):
     def __init__(self):
         super().__init__()
 
@@ -14,9 +14,12 @@ class MusicTagger(QObject):
     @staticmethod
     def apply_tags(file_path, artist, title, album) -> None:
         audio = EasyID3(file_path)
-        audio['title'] = title
-        audio['artist'] = artist
-        audio['album'] = album
+        if title is not None:
+            audio['title'] = title
+        if artist is not None:
+            audio['artist'] = artist
+        if album is not None:
+            audio['album'] = album
         audio.save()
 
     # Função para renomear os arquivos
@@ -26,6 +29,7 @@ class MusicTagger(QObject):
         file_name = os.path.basename(file_path)
         extension = os.path.splitext(file_name)[1]
         new_file_name = f'{title}{extension}'
+        new_file_name = new_file_name.replace(';', ' ft.')
         new_file_path = os.path.join(dir_name, new_file_name)
 
         try:

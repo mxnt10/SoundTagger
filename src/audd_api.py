@@ -14,9 +14,6 @@ class audDAPI(QObject):
     finished = pyqtSignal(dict, int)
     processing = pyqtSignal(str, int)
 
-    def __init__(self):
-        super().__init__()
-
     def process(self, item, row) -> None:
         settings = SettingsManager()
 
@@ -45,8 +42,8 @@ class audDAPI(QObject):
                 self.finished.emit(result.json(), row)
 
         except Exception as msg:
-            Notification.notify_send(app_title=self.tr('Error'),
-                                     title=str(),
-                                     message=str(msg),
-                                     icon='error',
-                                     timeout=10)
+            Notification().notify_send(app_title=self.tr('Error'),
+                                       title=str(),
+                                       message=str(msg),
+                                       icon='error',
+                                       timeout=10)

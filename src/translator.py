@@ -4,8 +4,10 @@ from PyQt5.QtCore import QTranslator, QObject, QLocale
 from PyQt5.QtWidgets import QApplication
 
 
-# Classe para pesquisar o local que vai ficar a tradução
-class GetLang(QObject):
+# Classe para definir o idioma
+class Translator(QObject):
+
+    # Local onde estão os idiomas
     @staticmethod
     def get_lang():
         def_dir = "/usr/share/SoundTagger/lang"
@@ -16,11 +18,8 @@ class GetLang(QObject):
             return rel_dir
         return os.path.abspath("lang")
 
-
-# Classe para definir o idioma
-class Translator(QObject):
-    @staticmethod
-    def translate() -> None:
+    # Função para aplicar o idioma
+    def translate(self) -> None:
         translator = QTranslator()
-        if translator.load(GetLang.get_lang() + '/qt_' + QLocale.system().name().split('_')[0] + '.qm'):
+        if translator.load(self.get_lang() + '/qt_' + QLocale.system().name().split('_')[0] + '.qm'):
             QApplication.instance().installTranslator(translator)

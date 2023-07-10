@@ -9,7 +9,7 @@ from PyQt5.QtWidgets import QPushButton
 class Button(QPushButton):
     height = pyqtSignal(QPoint)
 
-    def __init__(self, text, tooltip, size=36):
+    def __init__(self, text, tooltip=str(), size=48):
         self.text = text
         self.tooltip = tooltip
         self.nm = size
@@ -20,7 +20,7 @@ class Button(QPushButton):
         super().__init__()
         self.setIcon(self.set_icon(self.text))
         self.setIconSize(QSize(self.nm, self.nm))
-        self.setFixedSize(self.nm + 5, self.nm + 5)
+        self.setFixedSize(self.nm, self.nm)
         self.setToolTip(self.tooltip)
         self.setFocusPolicy(Qt.NoFocus)
 
@@ -37,24 +37,27 @@ class Button(QPushButton):
             return QIcon.fromTheme('dialog-cancel')
         if txt == 'remove-list':
             return QIcon.fromTheme('paint-none')
-        if txt == 'run':
+        if txt == 'fingerprint':
             return QIcon.fromTheme('run-build')
-        if txt == 'main':
+        if txt == 'return':
             return QIcon.fromTheme('go-home')
         if txt == 'settings':
             return QIcon.fromTheme('configure')
         if txt == 'about':
             return QIcon.fromTheme('help-about')
+        if txt == 'apply':
+            return QIcon.fromTheme('run-build')
         return QIcon()
 
     # Função para setar os ícones
     def set_icon(self, txt):
-        if os.path.exists(self.def_icon + '/' + txt + '.png'):
-            return QIcon(self.def_icon + '/' + txt + '.png')
-        if os.path.exists(self.rel_icon + '/' + txt + '.png'):
-            return QIcon(self.rel_icon + '/' + txt + '.png')
-        if os.path.exists(self.alt_icon + '/' + txt + '.png'):
-            return QIcon(self.alt_icon + '/' + txt + '.png')
+        ext = 'svg'
+        if os.path.exists(self.def_icon + '/' + txt + '.' + ext):
+            return QIcon(self.def_icon + '/' + txt + '.' + ext)
+        if os.path.exists(self.rel_icon + '/' + txt + '.' + ext):
+            return QIcon(self.rel_icon + '/' + txt + '.' + ext)
+        if os.path.exists(self.alt_icon + '/' + txt + '.' + ext):
+            return QIcon(self.alt_icon + '/' + txt + '.' + ext)
         return self.default_icon(txt)
 
     # Ação ao posicionar o mouse sobre o botão

@@ -3,9 +3,12 @@ import os
 from plyer import notification
 
 
-class Icons:
+# Função básica para emitir notificações do programa
+class Notification:
+
+    # Função para achar os ícones das notificações
     @staticmethod
-    def get(txt):
+    def get_icons(txt):
         def_icon = "/usr/share/SoundTagger/notification"
         rel_icon = os.path.abspath("../notification")
         alt_icon = os.path.abspath("notification")
@@ -18,18 +21,15 @@ class Icons:
             return alt_icon + '/' + txt + '.png'
         return str()
 
-
-# Função básica para emitir notificações do programa
-class Notification:
-    @staticmethod
-    def notify_send(app_title=str(), title=str(), message=str(), icon='info', timeout=5):
+    # Função para as notificações
+    def notify_send(self, app_title=str(), title=str(), message=str(), icon='info', timeout=5):
         name = 'Sound Tagger'
         if app_title != str():
             name += str(' - ' + app_title)
 
         notification.notify(
             app_name=name,
-            app_icon=Icons.get(icon),
+            app_icon=self.get_icons(icon),
             title=title,
             message=message,
             timeout=timeout
