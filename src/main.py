@@ -36,8 +36,9 @@ class SoundTaggerApp(QMainWindow):
         self.run_options = RunOptions()
         list_widget = ListWidget()
         list_widget.setWidgetEvent(self.run_options)
-        list_layout = HBoxLayout(margin=9)
-        list_layout.addWidget(list_widget)
+        list_widget.added.connect(self.activeButtons)
+        list_widget.removed.connect(self.deactiveButtons)
+        list_layout = HBoxLayout(margin=9, array_widgets=[list_widget])
         self.run_options.run.connect(list_widget.process_sounds)
 
         # Widget da lista para o QStackedWidget
@@ -56,12 +57,12 @@ class SoundTaggerApp(QMainWindow):
         self.stack.addWidget(settings_widget)
 
         # Botões da interface
-        add = Button('add', tooltip=self.tr('Add Files'))
-        add.clicked.connect(list_widget.add_item)
-        remove = Button('remove', tooltip=self.tr('Remove File'))
-        remove.clicked.connect(list_widget.remove_selected_items)
-        clean = Button('clean', tooltip=self.tr('Remove Selected Files'))
-        clean.clicked.connect(list_widget.clear_items)
+        self.add = Button('add', tooltip=self.tr('Add Files'))
+        self.add.clicked.connect(list_widget.add_item)
+        self.remove = Button('remove', tooltip=self.tr('Remove File'))
+        self.remove.clicked.connect(list_widget.remove_selected_items)
+        self.clean = Button('clean', tooltip=self.tr('Remove Selected Files'))
+        self.clean.clicked.connect(list_widget.clear_items)
         self.run = Button('fingerprint', tooltip=self.tr('Search Music Information'))
         self.run.height.connect(self.run_options.set_point)
         self.run.clicked.connect(self.show_options)
@@ -71,6 +72,7 @@ class SoundTaggerApp(QMainWindow):
         settings.clicked.connect(self.get_settings)
         about = Button('about', tooltip=self.tr('About'))
         about.clicked.connect(self.get_about)
+        self.deactiveButtons()
 
         # Controle do botão main
         self.v_main = QWidget()
@@ -81,18 +83,14 @@ class SoundTaggerApp(QMainWindow):
         # Ajuste dos botões do menu principal
         self.v_buttons = QWidget()
         list_buttons_layout = GridLayout(parent=self.v_buttons)
-        list_buttons_layout.addLayout(HBoxLayout(array_widgets=[add, remove, clean, self.run]), 0, 0)
+        list_buttons_layout.addLayout(HBoxLayout(array_widgets=[self.add, self.remove,
+                                                                self.clean, 10, self.run]), 0, 0)
 
-        # Ajuste dos botões de configuração e sobre
+        # Ajuste dos botões e layout
         f_buttons = QWidget()
         f_buttons_layout = GridLayout(parent=f_buttons)
         f_buttons_layout.addLayout(HBoxLayout(array_widgets=[settings, about]), 0, 0)
-
-        # Layout para todos os botões
-        buttons = HBoxLayout(margin=0, array_widgets=[self.v_buttons])
-        buttons.addStretch(1)
-        buttons.addWidget(self.v_main)
-        buttons.addWidget(f_buttons)
+        buttons = HBoxLayout(margin=0, array_widgets=[self.v_buttons, 'S', self.v_main, f_buttons])
 
         # Layout principal
         main_layout = VBoxLayout(parent=main_widget)
@@ -131,6 +129,18 @@ class SoundTaggerApp(QMainWindow):
                                        title=self.tr('Configure an API Key'),
                                        message=self.tr('No API Key has been configured!'),
                                        icon='key')
+
+    # Ativar botões
+    def activeButtons(self):
+        self.remove.setVisible(True)
+        self.clean.setVisible(True)
+        self.run.setVisible(True)
+
+    # Desativar botões
+    def deactiveButtons(self):
+        self.remove.setVisible(False)
+        self.clean.setVisible(False)
+        self.run.setVisible(False)
 
     # Por enquanto vai servir
     def moveEvent(self, event):

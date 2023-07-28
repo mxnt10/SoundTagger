@@ -10,4 +10,9 @@ class HBoxLayout(QHBoxLayout):
 
         if array_widgets is not None:
             for widget in array_widgets:
-                self.addWidget(widget)
+                if type(widget) == int:
+                    self.addSpacing(widget)
+                elif type(widget) == str and widget == 'S':
+                    self.addStretch(1)
+                else:
+                    self.addWidget(widget)

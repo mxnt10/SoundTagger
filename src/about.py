@@ -7,7 +7,7 @@ from icon import IconPrg
 from label_layout import LabelLayout
 from vboxlayout import VBoxLayout
 
-VERSION = '1.0 pre-release 2'
+VERSION = '2023.07.27'
 
 
 # Software que usa uma API de impressão digital acústica para buscar metadados
@@ -42,8 +42,7 @@ class About(QWidget):
         self.desc7 = LabelLayout(self.tr('Telegram'), '@maurixnovatrento', blue=True)
         self.desc8 = LabelLayout(self.tr('License'), 'GNU General Public License Version 3 (GLPv3)', italic=False)
 
-        lay = VBoxLayout(margin=0)
-        lay.setSpacing(0)
+        lay = VBoxLayout(margin=0, spacing=0)
         lay.addStretch(1)
         lay.addLayout(self.label)
         lay.addSpacing(15)

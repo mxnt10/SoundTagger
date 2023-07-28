@@ -76,7 +76,7 @@ class RunOptions(QWidget):
 
     # Função para mover a janela conforme a interface
     def set_resize(self, pos) -> None:
-        self.move(pos.x() - self.w, pos.y() + 42)
+        self.move(pos.x() - self.w, pos.y() + 43)
         self.show()
 
     # Emissão para avisar o programa que é para executar a busca ao fechar o diálogo

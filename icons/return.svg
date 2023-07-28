@@ -4,22 +4,13 @@
 <desc>Created with Fabric.js 5.2.4</desc>
 <defs>
 </defs>
-<rect x="0" y="0" width="100%" height="100%" fill="transparent"></rect>
-<g transform="matrix(1 0 0 1 540 540)" id="a0ae6664-800c-4076-952f-a8ede15c3236"  >
+<g transform="matrix(1 0 0 1 540 540)" id="fe48a930-70ed-48eb-b48d-4909c9edcdd3"  >
 <rect style="stroke: none; stroke-width: 1; stroke-dasharray: none; stroke-linecap: butt; stroke-dashoffset: 0; stroke-linejoin: miter; stroke-miterlimit: 4; fill: rgb(255,255,255); fill-rule: nonzero; opacity: 1; visibility: hidden;" vector-effect="non-scaling-stroke"  x="-540" y="-540" rx="0" ry="0" width="1080" height="1080" />
 </g>
-<g transform="matrix(1 0 0 1 540 540)" id="bf2986ad-6cd8-44ac-b76b-5bf0086c6680"  >
+<g transform="matrix(1 0 0 1 540 540)" id="9f3c9c6c-4dc2-4797-b93b-16e34ee446c8"  >
 </g>
-<g transform="matrix(0 0 0 0 0 0)"  >
-<g style=""   >
-</g>
-</g>
-<g transform="matrix(NaN NaN NaN NaN 0 0)"  >
-<g style=""   >
-</g>
-</g>
-<g transform="matrix(1 0 0 1 540 540)" id="f4cab80e-d6d8-46a1-9f29-ff7c779f9a20"  >
-<path style="stroke: rgb(0,0,0); stroke-width: 0; stroke-dasharray: none; stroke-linecap: butt; stroke-dashoffset: 0; stroke-linejoin: miter; stroke-miterlimit: 4; fill: rgb(154,160,166); fill-rule: nonzero; opacity: 1;" vector-effect="non-scaling-stroke"  transform=" translate(-483, 480)" d="M 655 -80 L 255 -480 L 655 -880 L 711 -823 L 368 -480 L 711 -137 L 655 -80 Z" stroke-linecap="round" />
+<g transform="matrix(0 -1 1 0 540 540)" id="80c94dd0-024d-44ef-adbf-2ebdb0807d91"  >
+<path style="stroke: rgb(0,0,0); stroke-width: 0; stroke-dasharray: none; stroke-linecap: butt; stroke-dashoffset: 0; stroke-linejoin: miter; stroke-miterlimit: 4; fill: rgb(154,160,166); fill-rule: nonzero; opacity: 1;" vector-effect="non-scaling-stroke"  transform=" translate(-480, 480)" d="M 350 -394 L 480 -524 L 610 -394 L 653 -436 L 480 -609 L 307 -436 L 350 -394 Z M 480 -80 Q 397 -80 324 -111.5 Q 251 -143 197 -197 Q 143 -251 111.5 -324 Q 80 -397 80 -480 Q 80 -563 111.5 -635.5 Q 143 -708 197 -762.5 Q 251 -817 324 -848.5 Q 397 -880 480 -880 Q 563 -880 635.5 -848.5 Q 708 -817 762.5 -762.5 Q 817 -708 848.5 -635.5 Q 880 -563 880 -480 Q 880 -397 848.5 -324 Q 817 -251 762.5 -197 Q 708 -143 635.5 -111.5 Q 563 -80 480 -80 Z M 480 -140 Q 621 -140 720.5 -239 Q 820 -338 820 -480 Q 820 -621 720.5 -720.5 Q 621 -820 480 -820 Q 338 -820 239 -720.5 Q 140 -621 140 -480 Q 140 -338 239 -239 Q 338 -140 480 -140 Z M 480 -480 Z" stroke-linecap="round" />
 </g>
 <g transform="matrix(NaN NaN NaN NaN 0 0)"  >
 <g style=""   >

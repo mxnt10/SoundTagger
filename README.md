@@ -1,4 +1,4 @@
-# SoundTagger pre-release 1
+# SoundTagger
 
 Programa que tem por objetivo não apenas usar impressão digital acústica para buscar por nomes de musicas, mas também
 usar essas requisições para alterar o metadata (id tag) dos arquivos e se preferir, renomear os arquivos multimídia

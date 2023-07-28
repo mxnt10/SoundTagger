@@ -1,6 +1,6 @@
 import multiprocessing
 
-from PyQt5.QtCore import Qt, QThreadPool, QItemSelection, QItemSelectionModel
+from PyQt5.QtCore import Qt, QThreadPool, QItemSelection, QItemSelectionModel, pyqtSignal
 from PyQt5.QtGui import QMouseEvent
 from PyQt5.QtWidgets import QTableWidget, QTableWidgetItem, QMenu, QAction, QFileDialog, QHeaderView, QWidget, \
     QAbstractItemView, QCheckBox
@@ -18,6 +18,9 @@ from worker import Worker, SharedClass
 
 # Classe que vai listar os arquivos multimídia
 class ListWidget(QTableWidget):
+    added = pyqtSignal()
+    removed = pyqtSignal()
+
     def __init__(self):
         super().__init__(0, 5)  # 0 linhas e 5 colunas
         self.setEditTriggers(QTableWidget.NoEditTriggers)
@@ -99,6 +102,7 @@ class ListWidget(QTableWidget):
             self.setCellWidget(row_count, __BUTTONS__, w_btn)
 
             rm_button.clicked.connect(self.remove_current_item)
+        self.added.emit()
 
     # Remover arquivo atualmente selecionado com o botão
     def remove_current_item(self) -> None:
@@ -109,6 +113,9 @@ class ListWidget(QTableWidget):
                 self.removeRow(row)
                 self.update_item_numbers()
 
+            if int(self.rowCount()) == 0:
+                self.removed.emit()
+
     # Remover arquivo atualmente selecionado no menu
     def remove_current_item_menu(self) -> None:
         if self.current_item_index is not None:
@@ -116,6 +123,9 @@ class ListWidget(QTableWidget):
             if row != -1:
                 self.removeRow(row)
                 self.update_item_numbers()
+
+            if int(self.rowCount()) == 0:
+                self.removed.emit()
 
     # Removes vários arquivos selecionados
     def remove_selected_items(self) -> None:
@@ -127,9 +137,13 @@ class ListWidget(QTableWidget):
             self.removeRow(row)
             self.update_item_numbers()
 
+        if int(self.rowCount()) == 0:
+            self.removed.emit()
+
     # Limpar a lista
     def clear_items(self) -> None:
         self.setRowCount(0)
+        self.removed.emit()
 
     # Atualizar numeração dos itens da lista
     def update_item_numbers(self) -> None:
