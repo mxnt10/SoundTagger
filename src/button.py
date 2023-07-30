@@ -9,7 +9,7 @@ from PyQt5.QtWidgets import QPushButton
 class Button(QPushButton):
     height = pyqtSignal(QPoint)
 
-    def __init__(self, text, tooltip=str(), size=48):
+    def __init__(self, text, tooltip=str(), size=52):
         self.text = text
         self.tooltip = tooltip
         self.nm = size
