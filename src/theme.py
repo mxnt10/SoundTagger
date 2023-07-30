@@ -11,7 +11,7 @@ class Theme(QObject):
         dark_palette.setColor(QPalette.Window, QColor(42, 46, 50))
         dark_palette.setColor(QPalette.WindowText, QColor(232, 232, 232))
         dark_palette.setColor(QPalette.Base, QColor(27, 30, 32))
-        dark_palette.setColor(QPalette.AlternateBase, QColor(27, 30, 32, 128))  # Semitransparente
+        dark_palette.setColor(QPalette.AlternateBase, QColor(27, 30, 32, 100))  # Semitransparente
         dark_palette.setColor(QPalette.ToolTipBase, QColor(42, 46, 50))
         dark_palette.setColor(QPalette.ToolTipText, QColor(232, 232, 232))
         dark_palette.setColor(QPalette.Text, QColor(232, 232, 232))
