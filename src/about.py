@@ -9,11 +9,12 @@ from vboxlayout import VBoxLayout
 
 VERSION = '2023.07.27'
 
-
 # Software que usa uma API de impressão digital acústica para buscar metadados
 # de arquivos multimídia como artista, título e álbum.
 # Além disso, possui configurações para automatizar tarefas como renomear arquivos multimídia
 # de acordo com o resultado da pesquisa e editar as ID tags.
+
+########################################################################################################################
 
 
 # Classe para as informações do programa
@@ -66,6 +67,8 @@ class About(QWidget):
             item.setAlignment(Qt.AlignCenter)
 
         self.setLayout(GridLayout(margin=0, layout=lay))
+
+########################################################################################################################
 
     def resizeEvent(self, event: QResizeEvent) -> None:
         s = int(self.size().height() / 4)
