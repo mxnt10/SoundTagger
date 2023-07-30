@@ -15,6 +15,8 @@ from settings_manager import SettingsManager
 from vboxlayout import VBoxLayout
 from worker import Worker, SharedClass
 
+########################################################################################################################
+
 
 # Classe que vai listar os arquivos multimídia
 class ListWidget(QTableWidget):

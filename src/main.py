@@ -18,6 +18,8 @@ from theme import Theme
 from translator import Translator
 from vboxlayout import VBoxLayout
 
+########################################################################################################################
+
 
 # Classe da interface principal
 class SoundTaggerApp(QMainWindow):

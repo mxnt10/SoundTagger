@@ -5,6 +5,8 @@ from gridlayout import GridLayout
 from settings_manager import SettingsManager
 from hboxlayout import HBoxLayout
 
+########################################################################################################################
+
 
 # Classe para as configurações
 class Settings(QWidget):
@@ -64,6 +66,8 @@ class Settings(QWidget):
         layout.addStretch(1)
 
         self.setLayout(GridLayout(margin=0, spacing=10, layout=layout))
+
+########################################################################################################################
 
     # Alterar a configuração chave da API audD
     def changeValues(self, key, text):

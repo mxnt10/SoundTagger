@@ -9,6 +9,9 @@ from settings_manager import SettingsManager
 from vboxlayout import VBoxLayout
 
 
+########################################################################################################################
+
+
 # Classe para configurar ajustes antes de iniciar a busca
 class RunOptions(QWidget):
     run = pyqtSignal()

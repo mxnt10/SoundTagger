@@ -15,7 +15,7 @@ class Worker(QRunnable):
         self.file_processor.run(self.file_name, self.row, self.callback)
 
 
-# Classe compartilhada para fazer a emissão dos sinais para
+# Classe compartilhada para fazer a emissão dos sinais
 class SharedClass(QObject):
     emitting = pyqtSignal(dict, int)
 
