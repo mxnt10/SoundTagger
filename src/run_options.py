@@ -15,7 +15,7 @@ class RunOptions(QWidget):
 
     def __init__(self):
         super().__init__()
-        self.setWindowFlags(Qt.FramelessWindowHint | Qt.WindowStaysOnTopHint)
+        self.setWindowFlags(Qt.FramelessWindowHint)
         self.setAttribute(Qt.WA_NoSystemBackground, True)
         self.setAttribute(Qt.WA_TranslucentBackground, True)
 
@@ -67,16 +67,16 @@ class RunOptions(QWidget):
     def set_point(self, point) -> None:
         if self.settings.priority_api() == 'acoustID':
             self.rangeslider.setVisible(False)
-            self.w = 240
+            self.w = 270
         else:
             self.rangeslider.setVisible(True)
-            self.w = 280
+            self.w = 310
 
         self.point = point
 
     # Função para mover a janela conforme a interface
     def set_resize(self, pos) -> None:
-        self.move(pos.x() - self.w, pos.y() + 43)
+        self.move(pos.x() - self.w, pos.y() + 40)
         self.show()
 
     # Emissão para avisar o programa que é para executar a busca ao fechar o diálogo
