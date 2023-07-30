@@ -4,6 +4,8 @@ from PyQt5.QtCore import QSize, Qt, pyqtSignal, QPoint, QEvent
 from PyQt5.QtGui import QIcon, QMouseEvent
 from PyQt5.QtWidgets import QPushButton
 
+########################################################################################################################
+
 
 # Classe para os botões
 class Button(QPushButton):
@@ -25,6 +27,8 @@ class Button(QPushButton):
         self.setFocusPolicy(Qt.NoFocus)
 
         self.setStyleSheet('QPushButton { border: none; background-color: transparent; }')
+
+########################################################################################################################
 
     # Função para buscar ícones alternativos, caso inexistente
     @staticmethod
@@ -60,10 +64,12 @@ class Button(QPushButton):
             return QIcon(self.alt_icon + '/' + txt + '.' + ext)
         return self.default_icon(txt)
 
+########################################################################################################################
+
     # Ação ao posicionar o mouse sobre o botão
     def enterEvent(self, event: QEvent) -> None:
         self.setIconSize(QSize(self.nm + 4, self.nm + 4))
-        self.height.emit(self.mapToGlobal(self.pos()))
+        self.height.emit(self.pos())
         super().enterEvent(event)
 
     # Ação ao tirar o mouse sobre o botão
@@ -82,4 +88,3 @@ class Button(QPushButton):
         if event.button() == 1:
             self.setIconSize(QSize(self.nm + 4, self.nm + 4))
         super().mouseReleaseEvent(event)
-
