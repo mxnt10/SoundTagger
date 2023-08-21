@@ -20,8 +20,7 @@ class AcoustIDAPI(QObject):
     def result_thread(self, item, row, callback) -> None:
         settings = SettingsManager()
         try:
-            result_json = {'status': 'success',
-                           'result': None}
+            result_json = {'status': 'success', 'result': None}
             results = acoustid.match(settings.load_api_key('acoustID_API'), item)
 
             for score, rid, title, artist in results:
@@ -35,23 +34,23 @@ class AcoustIDAPI(QObject):
             callback.emit(result_json, row)
 
         except acoustid.NoBackendError:
+            callback.emit({}, row)
             Notification().notify_send(app_title=self.tr('Error'),
                                        title=self.tr('Dependency Error'),
                                        message=self.tr('Chromaprint library/tool not found.'),
                                        icon='error',
                                        timeout=10)
-            callback.emit({}, row)
         except acoustid.FingerprintGenerationError:
+            callback.emit({}, row)
             Notification().notify_send(app_title=self.tr('Error'),
                                        title=self.tr('Fingerprint Generation Error'),
                                        message=self.tr('Fingerprint could not be calculated.'),
                                        icon='error',
                                        timeout=10)
-            callback.emit({}, row)
         except acoustid.WebServiceError as exc:
+            callback.emit({}, row)
             Notification().notify_send(app_title=self.tr('Error'),
                                        title=self.tr('Web Service Error'),
                                        message=self.tr('Web service request failed' + ': ' + exc.message),
                                        icon='error',
                                        timeout=10)
-            callback.emit({}, row)

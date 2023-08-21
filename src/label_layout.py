@@ -38,6 +38,7 @@ class LabelLayout(QHBoxLayout):
 
             self.addWidget(self.label2)
 
+    # Mudar o tamanho da fonte do label
     def setPointSize(self, size) -> None:
         self.font.setPointSize(size)
         self.label1.setFont(self.font)

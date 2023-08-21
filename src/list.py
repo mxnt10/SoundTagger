@@ -1,11 +1,12 @@
 import multiprocessing
 
-from PyQt5.QtCore import Qt, QThreadPool, QItemSelection, QItemSelectionModel, pyqtSignal
-from PyQt5.QtGui import QMouseEvent
+from PyQt5.QtCore import Qt, QThreadPool, QItemSelection, QItemSelectionModel, pyqtSignal, QRect
+from PyQt5.QtGui import QMouseEvent, QPainter, QBrush, QPalette
 from PyQt5.QtWidgets import QTableWidget, QTableWidgetItem, QMenu, QAction, QFileDialog, QHeaderView, QWidget, \
-    QAbstractItemView, QCheckBox
+    QAbstractItemView
 
 from button import Button
+from checkbox import CheckBox
 from file_processor import FileProcessor
 from list_delegate import ListDelegate
 from list_enum import __CHECK__, __FILES__, __NUMS__, __BUTTONS__, __MESSAGES__
@@ -15,6 +16,7 @@ from settings_manager import SettingsManager
 from vboxlayout import VBoxLayout
 from worker import Worker, SharedClass
 
+
 ########################################################################################################################
 
 
@@ -22,12 +24,14 @@ from worker import Worker, SharedClass
 class ListWidget(QTableWidget):
     added = pyqtSignal()
     removed = pyqtSignal()
+    show_tag = pyqtSignal(int)
+    clean_selection = pyqtSignal()
 
     def __init__(self):
         super().__init__(0, 5)  # 0 linhas e 5 colunas
+        self.setSelectionBehavior(QTableWidget.SelectRows)
         self.setEditTriggers(QTableWidget.NoEditTriggers)
         self.setFocusPolicy(Qt.NoFocus)
-        self.setAlternatingRowColors(True)
         self.horizontalHeader().setVisible(False)
         self.verticalHeader().setVisible(False)
         self.setShowGrid(False)
@@ -42,17 +46,49 @@ class ListWidget(QTableWidget):
         header.setSectionResizeMode(__MESSAGES__, QHeaderView.Stretch)
 
         # Estilização da lista
-        self.setItemDelegate(ListDelegate())
-        self.setStyleSheet('QTableWidget { border: none; background-color: transparent; }'
-                           'QScrollBar { border: none; background-color: transparent; width: 10px; }'
-                           'QScrollBar::handle { background-color: #9aa0a6; min-height: 10px; border-radius: 5px; }'
-                           'QScrollBar::add-line, QScrollBar::sub-line { background: none; }'
-                           'QScrollBar::add-page, QScrollBar::sub-page { background: none; }')
+        self.setItemDelegate(ListDelegate(self))
+        self.setStyleSheet(
+            'QTableWidget {'
+            '    border: none;'
+            '    background-color: transparent;'
+            '}'
+            'QScrollBar {'
+            '    border: none;'
+            '    background-color: transparent;'
+            '    width: 10px;'
+            '}'
+            'QScrollBar::handle {'
+            '    background-color: #75797e;'
+            '    min-height: 10px;'
+            '    border-radius: 5px;'
+            '    border: 2px solid transparent;'
+            '}'
+            'QScrollBar::add-line, QScrollBar::sub-line {'
+            '    background: none;'
+            '}'
+            'QScrollBar::add-page, QScrollBar::sub-page {'
+            '    background: none;'
+            '}'
+        )
 
         self.current_item_index = None
         self.widget_event = None
         self.start_item = None
         self.end_item = None
+        self.current_item = None
+
+        self.itemSelectionChanged.connect(self.on_selection_changed)
+
+    ########################################################################################################################
+
+    # Ação ao selecionar qualquer item da lista
+    def on_selection_changed(self):
+        if self.rowCount() == 0:
+            return
+
+        selected_items = self.selectedItems()
+        if selected_items:
+            self.current_item = selected_items
 
     # Adicionar os arquivos de áudio na lista
     def add_item(self):
@@ -81,10 +117,9 @@ class ListWidget(QTableWidget):
 
             nm = QTableWidgetItem(str(row_count + 1) + '. ')
             nm.setTextAlignment(Qt.AlignCenter | Qt.AlignRight)
-            rm_button = Button("remove-list", tooltip=self.tr('Remove File'), size=28)
+            rm_button = Button("remove-list", tooltip=self.tr('Remove File'), size=31)
 
-            select_ck = QCheckBox()
-            select_ck.setChecked(True)
+            select_ck = CheckBox(checked=True)
             select_ck.stateChanged.connect(self.update_messages)
 
             w_ck = QWidget()
@@ -95,7 +130,7 @@ class ListWidget(QTableWidget):
             w_btn = QWidget()
             w_btn.setStyleSheet('QWidget { border: 0; background-color: transparent; }')
             l_btn = VBoxLayout(parent=w_btn, margin=0, array_widgets=[rm_button])
-            l_btn.setAlignment(Qt.AlignCenter)
+            l_btn.setAlignment(Qt.AlignCenter | Qt.AlignLeft)
 
             self.setCellWidget(row_count, __CHECK__, w_ck)
             self.setItem(row_count, __NUMS__, nm)
@@ -117,6 +152,7 @@ class ListWidget(QTableWidget):
 
             if int(self.rowCount()) == 0:
                 self.removed.emit()
+                self.clean_selection.emit()
 
     # Remover arquivo atualmente selecionado no menu
     def remove_current_item_menu(self) -> None:
@@ -128,6 +164,7 @@ class ListWidget(QTableWidget):
 
             if int(self.rowCount()) == 0:
                 self.removed.emit()
+                self.clean_selection.emit()
 
     # Removes vários arquivos selecionados
     def remove_selected_items(self) -> None:
@@ -141,10 +178,12 @@ class ListWidget(QTableWidget):
 
         if int(self.rowCount()) == 0:
             self.removed.emit()
+            self.clean_selection.emit()
 
     # Limpar a lista
     def clear_items(self) -> None:
         self.setRowCount(0)
+        self.clean_selection.emit()
         self.removed.emit()
 
     # Atualizar numeração dos itens da lista
@@ -272,15 +311,26 @@ class ListWidget(QTableWidget):
     def setWidgetEvent(self, widget) -> None:
         self.widget_event = widget
 
-    # Evento para gerar o menu de contexto para os arquivos na lista
-    def contextMenuEvent(self, event):
-        if self.rowCount() == 0:
-            return
+    def index_row(self):
+        try:
+            return int(self.row(self.selectedItems()[0]))
+        except Exception as msg:
+            _ = msg
+            return -1
 
+    ########################################################################################################################
+
+    # Evento para gerar o menu de contexto para os arquivos na lista
+    def contextMenuEvent(self, event) -> None:
         menu = QMenu(self)
+
+        add = QAction(self.tr('Add Files'), self)
+        add.triggered.connect(self.add_item)
+        menu.addAction(add)
+
         index = self.indexAt(event.pos())
         if index.isValid() and index.column() == __FILES__:
-            if len(self.selectedItems()) < 2:
+            if len(self.selectedItems()) < 2 * 3:  # Sério
                 self.setCurrentCell(index.row(), index.column())
                 self.current_item_index = index
                 remove_current_action = QAction(self.tr('Remove Current Item'), self)
@@ -292,17 +342,20 @@ class ListWidget(QTableWidget):
                 menu.addAction(remove_selected_action)
         elif not index.isValid():
             self.clearSelection()
+            self.clean_selection.emit()
 
-        select_all = QAction(self.tr('Select All to search'), self)
-        select_all.triggered.connect(self.select_all_ck)
-        menu.addAction(select_all)
+        if self.rowCount() > 0:
+            select_all = QAction(self.tr('Select All to search'), self)
+            select_all.triggered.connect(self.select_all_ck)
+            menu.addAction(select_all)
 
-        unselect_all = QAction(self.tr('Unselect All to search'), self)
-        unselect_all.triggered.connect(self.unselect_all_ck)
-        menu.addAction(unselect_all)
+            unselect_all = QAction(self.tr('Unselect All to search'), self)
+            unselect_all.triggered.connect(self.unselect_all_ck)
+            menu.addAction(unselect_all)
 
         menu.exec_(event.globalPos())
 
+    # Ação ao mover o mouse após pressionado
     def mouseMoveEvent(self, event: QMouseEvent) -> None:
         if event.buttons() == Qt.LeftButton:
             if self.selectionMode() == QAbstractItemView.ExtendedSelection:
@@ -313,7 +366,7 @@ class ListWidget(QTableWidget):
                     selection_model = self.selectionModel()
                     selection_model.clearSelection()
 
-                    try:
+                    try:  # Só por precaução
                         start_index = self.model().index(self.start_item.row(), __FILES__)
                         end_index = self.model().index(self.end_item.row(), __FILES__)
                         range_selection = QItemSelection(start_index, end_index)
@@ -324,20 +377,33 @@ class ListWidget(QTableWidget):
                         pass
         super().mouseMoveEvent(event)
 
+    # Ação ao despressionar o mouse
     def mouseReleaseEvent(self, event: QMouseEvent) -> None:
+        index = self.indexAt(event.pos())
+        if not index.isValid():
+            self.clearSelection()
+            self.clean_selection.emit()
+
+        # Emissão do item atual selecionado
+        if self.current_item is not None and (self.end_item is None or self.start_item == self.end_item):
+            try:  # Sem bestera
+                self.show_tag.emit(self.current_item[0].row())
+            except Exception as msg:
+                _ = msg  # Convenção do _
+                pass
+        self.current_item = None
+
         if event.button() == Qt.LeftButton:
             if self.selectionMode() == QAbstractItemView.ExtendedSelection:
                 self.start_item = None
                 self.end_item = None
 
-        index = self.indexAt(event.pos())
-        if not index.isValid():
-            self.clearSelection()
-
+        # Fechar run_options
         if not self.widget_event.isHidden():
             self.widget_event.close()
         super().mouseReleaseEvent(event)
 
+    # Ação ao pressionar o mouse
     def mousePressEvent(self, event: QMouseEvent) -> None:
         if event.button() == Qt.LeftButton:
             if self.selectionMode() == QAbstractItemView.ExtendedSelection:
@@ -347,3 +413,24 @@ class ListWidget(QTableWidget):
                     self.clearSelection()
                     self.setCurrentCell(self.start_item.row(), __FILES__)
         super().mousePressEvent(event)
+
+    # Função para pintar a linha selecionada
+    def paintEvent(self, event):
+        super().paintEvent(event)
+
+        painter = QPainter(self.viewport())
+        painter.setRenderHint(QPainter.Antialiasing)
+        selected_rows = self.selectionModel().selectedRows()
+
+        for index in selected_rows:
+            option = self.viewOptions()
+            option.rect = self.visualRect(index)
+
+            highlight_color = QPalette().color(QPalette.Highlight)
+            highlight_color.setAlpha(80)
+
+            painter.save()
+            painter.setBrush(QBrush(highlight_color))
+            painter.setPen(Qt.NoPen)
+            painter.drawRoundedRect(QRect(0, option.rect.top(), self.width() - 10, option.rect.height()), 16, 16)
+            painter.restore()

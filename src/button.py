@@ -26,7 +26,12 @@ class Button(QPushButton):
         self.setToolTip(self.tooltip)
         self.setFocusPolicy(Qt.NoFocus)
 
-        self.setStyleSheet('QPushButton { border: none; background-color: transparent; }')
+        self.setStyleSheet(
+            'QPushButton {'
+            '    border: none;'
+            '    background-color: transparent;'
+            '}'
+        )
 
 ########################################################################################################################
 

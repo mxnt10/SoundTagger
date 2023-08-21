@@ -42,6 +42,7 @@ class audDAPI(QObject):
                 self.finished.emit(result.json(), row)
 
         except Exception as msg:
+            self.finished.emit({}, row)
             Notification().notify_send(app_title=self.tr('Error'),
                                        title=str(),
                                        message=str(msg),

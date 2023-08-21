@@ -7,7 +7,7 @@ from icon import IconPrg
 from label_layout import LabelLayout
 from vboxlayout import VBoxLayout
 
-VERSION = '2023.07.27'
+VERSION = '23.08.20'
 
 # Software que usa uma API de impressão digital acústica para buscar metadados
 # de arquivos multimídia como artista, título e álbum.
@@ -33,33 +33,20 @@ class About(QWidget):
         d3 = self.tr('Furthermore, it has settings to automate tasks such as renaming multimedia')
         d4 = self.tr('files according to the search result and editing ID tags.')
 
-        self.desc1 = LabelLayout(d1, bold=False, one=True)
-        self.desc2 = LabelLayout(d2, bold=False, one=True)
-        self.desc3 = LabelLayout(d3, bold=False, one=True)
-        self.desc4 = LabelLayout(d4, bold=False, one=True)
+        desc1 = LabelLayout(d1, bold=False, one=True)
+        desc2 = LabelLayout(d2, bold=False, one=True)
+        desc3 = LabelLayout(d3, bold=False, one=True)
+        desc4 = LabelLayout(d4, bold=False, one=True)
 
-        self.desc5 = LabelLayout(self.tr('Maintainer'), 'Mauricio Ferrari', italic=False)
-        self.desc6 = LabelLayout(self.tr('E-Mail'), 'm10ferrari1200@gmail.com', blue=True)
-        self.desc7 = LabelLayout(self.tr('Telegram'), '@maurixnovatrento', blue=True)
-        self.desc8 = LabelLayout(self.tr('License'), 'GNU General Public License Version 3 (GLPv3)', italic=False)
+        desc5 = LabelLayout(self.tr('Maintainer'), 'Mauricio Ferrari', italic=False)
+        desc6 = LabelLayout(self.tr('E-Mail'), 'm10ferrari1200@gmail.com', blue=True)
+        desc7 = LabelLayout(self.tr('Telegram'), '@maurixnovatrento', blue=True)
+        desc8 = LabelLayout(self.tr('License'), 'GNU General Public License Version 3 (GLPv3)', italic=False)
 
-        lay = VBoxLayout(margin=0, spacing=0)
-        lay.addStretch(1)
-        lay.addLayout(self.label)
-        lay.addSpacing(15)
-        lay.addWidget(self.icon)
-        lay.addSpacing(15)
-        lay.addLayout(self.desc1)
-        lay.addLayout(self.desc2)
-        lay.addLayout(self.desc3)
-        lay.addLayout(self.desc4)
-        lay.addSpacing(15)
-        lay.addLayout(self.desc5)
-        lay.addLayout(self.desc6)
-        lay.addLayout(self.desc7)
-        lay.addSpacing(15)
-        lay.addLayout(self.desc8)
-        lay.addStretch(1)
+        self.it = ['S', self.label, 15, self.icon, 15, desc1, desc2, desc3, desc4, 15,
+                   desc5, desc6, desc7, 15, desc8, 'S']
+
+        lay = VBoxLayout(margin=0, spacing=0, array_widgets=self.it)
 
         # Centralizando os widgets no layout
         for i in range(lay.count()):
@@ -81,21 +68,15 @@ class About(QWidget):
             self.label.setPointSize(12)
 
         if f > 15:
-            self.desc1.setPointSize(11)
-            self.desc2.setPointSize(11)
-            self.desc3.setPointSize(11)
-            self.desc4.setPointSize(11)
-            self.desc5.setPointSize(11)
-            self.desc6.setPointSize(11)
-            self.desc7.setPointSize(11)
-            self.desc8.setPointSize(11)
+            for i in self.it:
+                if i == self.label:
+                    continue
+                if isinstance(i, LabelLayout):
+                    i.setPointSize(11)
         else:
             q = QFontDatabase.systemFont(QFontDatabase.GeneralFont).pointSize()
-            self.desc1.setPointSize(q)
-            self.desc2.setPointSize(q)
-            self.desc3.setPointSize(q)
-            self.desc4.setPointSize(q)
-            self.desc5.setPointSize(q)
-            self.desc6.setPointSize(q)
-            self.desc7.setPointSize(q)
-            self.desc8.setPointSize(q)
+            for i in self.it:
+                if i == self.label:
+                    continue
+                if isinstance(i, LabelLayout):
+                    i.setPointSize(q)

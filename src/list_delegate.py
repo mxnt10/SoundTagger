@@ -1,20 +1,40 @@
-from PyQt5.QtGui import QPalette
-from PyQt5.QtWidgets import QStyledItemDelegate, QStyle
+from PyQt5.QtCore import QRect, Qt
+from PyQt5.QtGui import QPalette, QBrush, QPainter, QColor
+from PyQt5.QtWidgets import QStyledItemDelegate, QStyle, QStyleOptionViewItem
 
 
-# Delegate para impedir a seleção e o realce de colunas específicas
+# Delegate para realçar e selecionar as colunas
 class ListDelegate(QStyledItemDelegate):
+    def __init__(self, parent=None):
+        self.this = parent
+        super().__init__(parent)
+
     def initStyleOption(self, option, index):
         super().initStyleOption(option, index)
 
-        # Definir a cor da seleção
         if option.state & QStyle.State_Selected:
             palette = option.palette
-            highlight_color = palette.color(QPalette.Highlight)
-            highlight_color.setAlpha(100)
-            palette.setColor(QPalette.Highlight, highlight_color)
+            palette.setColor(QPalette.Highlight, QColor(0, 0, 0, 0))
             option.palette = palette
 
     def paint(self, painter, option, index):
-        option.state &= ~QStyle.State_MouseOver
-        super().paint(painter, option, index)
+        options = QStyleOptionViewItem(option)
+        self.initStyleOption(options, index)
+
+        # Verifique se o mouse está sobre a linha
+        if options.state & QStyle.State_MouseOver:
+            options.state &= ~QStyle.State_MouseOver
+
+            # Realce padrão da seleção com semitransparência
+            highlight_color = QPalette().color(QPalette.Highlight)
+            highlight_color.setAlpha(20)
+
+            # Realce de toda a linha selecionada
+            painter.save()
+            painter.setRenderHint(QPainter.Antialiasing)
+            painter.setPen(Qt.NoPen)
+            painter.setBrush(QBrush(highlight_color))
+            painter.drawRoundedRect(QRect(0, option.rect.top(), self.this.width() - 10, option.rect.height()), 16, 16)
+            painter.restore()
+
+        super().paint(painter, options, index)
