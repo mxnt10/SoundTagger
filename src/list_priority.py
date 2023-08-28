@@ -13,7 +13,6 @@ class ListPriority(QListWidget):
         self.setFocusPolicy(Qt.NoFocus)
         self.setDragDropMode(QListWidget.InternalMove)
         t = Theme()
-        print(t.__LINE__, t.__UNSELECT__, t.__SELECT__)
 
         self.setStyleSheet(
             'QListWidget {'
