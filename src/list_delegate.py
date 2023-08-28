@@ -1,6 +1,8 @@
 from PyQt5.QtCore import QRect, Qt
-from PyQt5.QtGui import QPalette, QBrush, QPainter, QColor
+from PyQt5.QtGui import QPalette, QBrush, QPainter
 from PyQt5.QtWidgets import QStyledItemDelegate, QStyle, QStyleOptionViewItem
+
+from theme import Theme
 
 
 # Delegate para realçar e selecionar as colunas
@@ -8,13 +10,14 @@ class ListDelegate(QStyledItemDelegate):
     def __init__(self, parent=None):
         self.this = parent
         super().__init__(parent)
+        self.t = Theme()
 
     def initStyleOption(self, option, index):
         super().initStyleOption(option, index)
 
         if option.state & QStyle.State_Selected:
             palette = option.palette
-            palette.setColor(QPalette.Highlight, QColor(0, 0, 0, 0))
+            palette.setColor(QPalette.Highlight, Qt.transparent)
             option.palette = palette
 
     def paint(self, painter, option, index):
@@ -27,7 +30,7 @@ class ListDelegate(QStyledItemDelegate):
 
             # Realce padrão da seleção com semitransparência
             highlight_color = QPalette().color(QPalette.Highlight)
-            highlight_color.setAlpha(20)
+            highlight_color.setAlpha(self.t.__UNSELECT__)
 
             # Realce de toda a linha selecionada
             painter.save()

@@ -50,7 +50,7 @@ class RunOptions(QWidget):
         layoutbtn = HBoxLayout(margin=10, array_widgets=[layoutck, 20, run])
         layoutbtn.setAlignment(run, Qt.AlignBottom)
 
-        self.setLayout(GridLayout(layout=layoutbtn, radius='12', on_border=True))
+        self.setLayout(GridLayout(layout=layoutbtn, radius='16', on_border=True))
 
 ########################################################################################################################
 

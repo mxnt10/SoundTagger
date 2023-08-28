@@ -1,6 +1,8 @@
 from PyQt5.QtCore import Qt
-from PyQt5.QtGui import QMouseEvent
+from PyQt5.QtGui import QMouseEvent, QPalette
 from PyQt5.QtWidgets import QListWidget
+
+from theme import Theme
 
 
 # Classe para a lista de prioridade
@@ -10,27 +12,35 @@ class ListPriority(QListWidget):
         self.setFixedSize(size)
         self.setFocusPolicy(Qt.NoFocus)
         self.setDragDropMode(QListWidget.InternalMove)
+        t = Theme()
+        print(t.__LINE__, t.__UNSELECT__, t.__SELECT__)
 
         self.setStyleSheet(
             'QListWidget {'
-            '    background-color: rgb(27, 30, 32);'
-            '    border: 6px solid rgb(27, 30, 32);'
-            '    border-top-left-radius: 8px;'
-            '    border-top-right-radius: 18px;'
-            '    border-bottom-left-radius: 18px;'
-            '    border-bottom-right-radius: 18px;'
+            '    background-color: ' + t.color_palette(QPalette.Base) + ';'
+            '    border: 1px solid ' + t.color_line() + ';'
+            '    border-top-left-radius: 6px;'
+            '    border-top-right-radius: 12px;'
+            '    border-bottom-left-radius: 12px;'
+            '    border-bottom-right-radius: 12px;'
+            '}'
+            'QListWidget:hover {'
+            '    border: 1px solid ' + t.color_rgba(QPalette.Highlight, t.__LINE__) + ';'
             '}'
             'QListWidget::Item:unselected {'
+            '    border: 1px solid transparent;'
             '    border-radius: 12px;'
             '    padding: 0 5;'
             '}'
             'QListWidget::Item:hover {'
-            '    background-color: rgba(61, 174, 233, 20);'
+            '    border: 1px solid transparent;'
+            '    background-color: ' + t.color_rgba(QPalette.Highlight, t.__UNSELECT__) + ';'
             '    border-radius: 12px;'
             '    padding: 0 5;'
             '}'
             'QListWidget::Item:selected {'
-            '    background-color: rgba(61, 174, 233, 80);'
+            '    border: 1px solid transparent;'
+            '    background-color: ' + t.color_rgba(QPalette.Highlight, t.__SELECT__) + ';'
             '    border-radius: 12px;'
             '    padding: 0 5;'
             '}'

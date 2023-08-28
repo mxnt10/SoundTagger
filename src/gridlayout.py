@@ -1,4 +1,7 @@
-from PyQt5.QtWidgets import QGridLayout, QWidget, QHBoxLayout, QVBoxLayout
+from PyQt5.QtGui import QPalette
+from PyQt5.QtWidgets import QGridLayout, QHBoxLayout, QVBoxLayout, QWidget
+
+from theme import Theme
 
 
 # O background foi inserido na interface de forma isolada, se for inserir a folha de estilo nos widgets
@@ -10,11 +13,12 @@ class GridLayout(QGridLayout):
         self.setContentsMargins(margin, margin, margin, margin)
         self.setSpacing(space)
 
-        border = ' border: 1px solid rgb(76, 78, 79);'
+        border = ' border: 1px solid ' + Theme.color_palette(QPalette.Light) + ';'
         if on_border is False:
             border = str()
 
-        style = 'background-color: rgb(42, 46, 50); border-radius: ' + radius + 'px;' + border
+        style = 'background-color: ' + Theme.color_palette(QPalette.Window) + \
+                '; border-radius: ' + radius + 'px;' + border
 
         self.widget = QWidget()
         self.widget.setStyleSheet(style)

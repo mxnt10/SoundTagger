@@ -13,6 +13,7 @@ from list_enum import __CHECK__, __FILES__, __NUMS__, __BUTTONS__, __MESSAGES__
 from music_utils import MusicUtils
 from notification import Notification
 from settings_manager import SettingsManager
+from theme import Theme
 from vboxlayout import VBoxLayout
 from worker import Worker, SharedClass
 
@@ -46,6 +47,7 @@ class ListWidget(QTableWidget):
         header.setSectionResizeMode(__MESSAGES__, QHeaderView.Stretch)
 
         # Estilização da lista
+        self.t = Theme()
         self.setItemDelegate(ListDelegate(self))
         self.setStyleSheet(
             'QTableWidget {'
@@ -58,7 +60,7 @@ class ListWidget(QTableWidget):
             '    width: 10px;'
             '}'
             'QScrollBar::handle {'
-            '    background-color: #75797e;'
+            '    background-color: ' + self.t.color_palette(QPalette.Light) + ';'
             '    min-height: 10px;'
             '    border-radius: 5px;'
             '    border: 2px solid transparent;'
@@ -427,7 +429,7 @@ class ListWidget(QTableWidget):
             option.rect = self.visualRect(index)
 
             highlight_color = QPalette().color(QPalette.Highlight)
-            highlight_color.setAlpha(80)
+            highlight_color.setAlpha(self.t.__SELECT__)
 
             painter.save()
             painter.setBrush(QBrush(highlight_color))

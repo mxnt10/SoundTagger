@@ -1,10 +1,10 @@
 import threading
 
-import acoustid
 from PyQt5.QtCore import pyqtSignal, QObject
 
 from settings_manager import SettingsManager
 from notification import Notification
+from acoustid import acoustid
 
 
 class AcoustIDAPI(QObject):

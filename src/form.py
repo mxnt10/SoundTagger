@@ -1,7 +1,9 @@
 from PyQt5.QtCore import Qt, pyqtSignal
+from PyQt5.QtGui import QPalette
 from PyQt5.QtWidgets import QHBoxLayout, QLineEdit, QLabel, QTextEdit
 
 from gridlayout import GridLayout
+from theme import Theme
 
 
 # Customização do layout para personalizar a interface mais facilmente
@@ -27,16 +29,22 @@ class Form(QHBoxLayout):
             labels.setAlignment(Qt.AlignLeft)
 
         self.addWidget(labels)
+        self.t = Theme()
 
         if type(self.form) == QLineEdit:
             self.form.setStyleSheet(
                 'QLineEdit {'
+                '    border: 1px solid ' + self.t.color_line() + ';'
                 '    border-radius: 16px;'
                 '    padding: 6px;'
                 '    padding-left: 12px;'
                 '}'
                 'QLineEdit:disabled {'
-                '    background-color: #5f6265;'
+                '    border: 1px solid ' + self.t.color_line() + ';'
+                '    background-color: ' + self.t.color_palette(QPalette.Midlight) + ';'
+                '}'
+                'QLineEdit:hover {'
+                '    border: 1px solid ' + self.t.color_rgba(QPalette.Highlight, self.t.__LINE__) + ';'
                 '}'
             )
 
@@ -44,25 +52,29 @@ class Form(QHBoxLayout):
         else:
             self.form.setStyleSheet(
                 'QTextEdit {'
-                '    padding: 5px;'
-                '    padding-left: 10px;'
+                '    margin: 8px;'
+                '    padding: -4 2;'
                 '    background-color: transparent;'
                 '    border: none; '
                 '}'
             )
 
-            grid = GridLayout(margin=0, layout=self.form)
-            grid.customStyle(
+            self.grid = GridLayout(margin=0, layout=self.form)
+            self.grid.customStyle(
                 'QWidget {'
-                '    background-color: rgb(27, 30, 32);'
-                '    border-top-left-radius: 8px;'
-                '    border-top-right-radius: 16px;'
-                '    border-bottom-left-radius: 16px;'
-                '    border-bottom-right-radius: 16px;'
+                '    border: 1px solid ' + self.t.color_line() + ';'
+                '    background-color: ' + self.t.color_palette(QPalette.Base) + ';'
+                '    border-top-left-radius: 6px;'
+                '    border-top-right-radius: 18px;'
+                '    border-bottom-left-radius: 18px;'
+                '    border-bottom-right-radius: 18px;'
                 '}'
             )
 
-            self.addLayout(grid)
+            self.form.enterEvent = self.focusStyle
+            self.form.leaveEvent = self.customStyle
+
+            self.addLayout(self.grid)
 
     # Precisa para setar o texto nos formulários
     def setText(self, txt) -> None:
@@ -75,3 +87,29 @@ class Form(QHBoxLayout):
     # Alterando a edição dos campos do formulário
     def setEnabled(self, bol) -> None:
         self.form.setEnabled(bol)
+
+    def focusStyle(self, event):
+        _ = event
+        self.grid.customStyle(
+            'QWidget {'
+            '    border: 1px solid ' + self.t.color_rgba(QPalette.Highlight, self.t.__LINE__) + ';'
+            '    background-color: ' + self.t.color_palette(QPalette.Base) + ';'
+            '    border-top-left-radius: 6px;'
+            '    border-top-right-radius: 18px;'
+            '    border-bottom-left-radius: 18px;'
+            '    border-bottom-right-radius: 18px;'
+            '}'
+        )
+
+    def customStyle(self, event):
+        _ = event
+        self.grid.customStyle(
+            'QWidget {'
+            '    border: 1px solid ' + self.t.color_line() + ';'
+            '    background-color: ' + self.t.color_palette(QPalette.Base) + ';'
+            '    border-top-left-radius: 6px;'
+            '    border-top-right-radius: 18px;'
+            '    border-bottom-left-radius: 18px;'
+            '    border-bottom-right-radius: 18px;'
+            '}'
+        )

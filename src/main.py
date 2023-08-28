@@ -7,20 +7,20 @@ from PyQt5.QtWidgets import QApplication, QWidget, QMainWindow, QDesktopWidget, 
 from about import About
 from background import Background
 from controls import Controls
-from edit_tags import editTags
+from edit_tools import editTools
 from gridlayout import GridLayout
 from hboxlayout import HBoxLayout
 from icon import IconPrg
 from list import ListWidget
+from list_enum import __FILES__
 from notification import Notification
 from run_options import RunOptions
 from settings import Settings
 from settings_manager import SettingsManager
-from edit_tools import editTools
 from theme import Theme
 from translator import Translator
 from vboxlayout import VBoxLayout
-from list_enum import __FILES__
+
 
 ########################################################################################################################
 
@@ -163,7 +163,10 @@ class SoundTaggerApp(QMainWindow):
 if __name__ == '__main__':
     app = QApplication(sys.argv)
 
-    Theme.applyDarkMode()
+    t = Theme()
+    t.viewColors()
+    t.applyAutoMode()
+
     Translator().translate()
 
     sound_tagger = SoundTaggerApp()
