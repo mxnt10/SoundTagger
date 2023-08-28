@@ -4,34 +4,30 @@ Programa que tem por objetivo não apenas usar impressão digital acústica para
 usar essas requisições para alterar o metadata (id tag) dos arquivos e se preferir, renomear os arquivos multimídia
 conforme os resultados obtidos.
 
-### Suporte de mídias
+### Suporte de Mídias Testados
 
 ✔️ Suportado ❌ Não suportado ➖ Não testado
 
-| Formatos | mutagen(view) | mutagen(edit) | acoustID | audD.io |
-|----------|:-------------:|:-------------:|:--------:|:-------:|
-| aac      |       ➖       |       ➖       |    ➖     |    ➖    |
-| ac3      |       ➖       |       ➖       |    ➖     |    ➖    |
-| aiff     |      ✔️       |       ➖       |    ➖     |    ➖    |
-| ape      |      ✔️       |       ➖       |    ➖     |    ➖    |
-| asf      |      ✔️       |       ➖       |    ➖     |    ➖    |
-| flac     |      ✔️       |       ➖       |    ➖     |    ➖    |
-| m4a      |      ✔️       |       ➖       |    ➖     |    ➖    |
-| mp3      |      ✔️️      |       ➖       |    ✔️    |   ✔️    |
-| mp4      |      ✔️       |       ➖       |    ➖     |    ➖    |
-| mpc      |      ✔️       |       ➖       |    ➖     |    ➖    |
-| ofr      |       ➖       |       ➖       |    ❌     |    ➖    |
-| ogg      |      ✔️       |       ➖       |    ➖     |    ➖    |
-| ogv      |      ✔️       |       ➖       |    ➖     |    ➖    |
-| opus     |      ✔️       |       ➖       |    ➖     |    ➖    |
-| tta      |      ✔️       |       ➖       |    ➖     |    ➖    |
-| wav      |      ✔️       |       ➖       |    ➖     |    ➖    |
-| wma      |      ✔️       |       ➖       |    ➖     |    ➖    |
-| wv       |      ✔️       |       ➖       |    ➖     |    ➖    |
+| Formatos       | mutagen(view) | mutagen(edit) | acoustID | audD.io |
+|----------------|:-------------:|:-------------:|:--------:|:-------:|
+| `aac`          |       ➖       |       ➖       |    ➖     |    ➖    |
+| `ac3`          |       ➖       |       ➖       |    ➖     |    ➖    |
+| `aiff`         |      ✔️       |       ➖       |    ➖     |    ➖    |
+| `ape`          |      ✔️       |       ➖       |    ➖     |    ➖    |
+| `asf wma`      |      ✔️       |       ➖       |    ➖     |    ➖    |
+| `flac`         |      ✔️       |       ➖       |    ➖     |    ➖    |
+| `mp3`          |      ✔️️      |       ➖       |    ✔️    |   ✔️    |
+| `mp4 m4a`      |      ✔️       |       ➖       |    ➖     |    ➖    |
+| `mpc`          |      ✔️       |       ➖       |    ➖     |    ➖    |
+| `ofr ofs`      |       ➖       |       ➖       |    ❌     |    ➖    |
+| `ogg ogv opus` |      ✔️       |       ➖       |    ➖     |    ➖    |
+| `tta`          |      ✔️       |       ➖       |    ➖     |    ➖    |
+| `wav`          |      ✔️       |       ➖       |    ➖     |    ➖    |
+| `wv`           |      ✔️       |       ➖       |    ➖     |    ➖    |
  
-### Recursos do Programa
+### Recursos do Programa até o Momento
 
-✔️ Implementado ❌ Não implementado ➕ Preparando ➖ Instável
+✔️ Implementado ❌ Não implementado ➕ Preparando ➖ Instável ou limitado
 
 | Recursos                                                | Implementação |
 |---------------------------------------------------------|:-------------:|
@@ -59,9 +55,9 @@ conforme os resultados obtidos.
 | Suporte a Notificações                                  |      ➖️       |
 | Converter formatos menos comuns para os mais comuns     |       ❌       |
 
-### Dependências Faltantes
+### Dependências Usadas no Programa
 
-✔️ Inclusas ➕ Faltantes ➖ Incluídas no sistema
+✔️ Inclusas no programa ➕ Precisa instalar no sistema ➖ Presentes no sistema
 
 |             Dependências do Programa | Versão Usada | Inclusão |
 |-------------------------------------:|:------------:|:--------:|
