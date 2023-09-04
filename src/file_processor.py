@@ -5,6 +5,7 @@ from PyQt5.QtCore import pyqtSignal, QObject
 from acoustid_api import AcoustIDAPI
 from audd_api import audDAPI
 from pydub import AudioSegment
+from pydub.exceptions import CouldntDecodeError
 from settings_manager import SettingsManager
 
 ########################################################################################################################
@@ -16,7 +17,7 @@ class FileProcessor(QObject):
     return_process = pyqtSignal(str, int)
 
     # Função para iniciar o multiprocessamento incluíndo a preparação da mídia para a busca
-    def run(self, audio_path, row, callback=None) -> None:
+    def run(self, audio_path, row, callback=None, notificator=None) -> None:
         self.return_process.emit(self.tr('Preparing File') + '...', row)
         sett = SettingsManager()
         select_api = sett.priority_api()
@@ -31,17 +32,25 @@ class FileProcessor(QObject):
 
                 with tempfile.NamedTemporaryFile(suffix="." + audio_path.split(".")[-1], delete=False) as temp_file:
                     temp_file = temp_file.name
-                    extracted_audio.export(temp_file, format=audio_path.split(".")[-1])
+                    extracted_audio.export(temp_file)
 
                     audd_api = audDAPI()
                     audd_api.finished.connect(lambda result, nm: self.return_json.emit(result, nm))
                     audd_api.processing.connect(lambda process, nm: self.return_process.emit(process, nm))
-                    audd_api.process(temp_file, row)
+                    audd_api.process(temp_file, row, notificator=notificator)
 
             elif select_api == 'acoustID':
                 api = AcoustIDAPI()
                 api.processing.connect(lambda process, nm: self.return_process.emit(process, nm))
-                api.process(audio_path, row, callback=callback)
-        except Exception as msg:
+                api.process(audio_path, row, callback=callback, notificator=notificator)
+
+        except CouldntDecodeError as msg:
             _ = msg
-            pass
+            self.return_json.emit({}, row)
+            print('(\033[92mfile_processor\033[m) Decoding failed.')
+
+        except Exception as msg:
+            self.return_json.emit({}, row)
+            print(f'\033[91m{type(msg)}\033[m')
+            print(f'(\033[92mfile_processor\033[m) {msg}')
+

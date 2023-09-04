@@ -20,6 +20,15 @@ from mutagen.optimfrog import OptimFROG
 from mutagen.trueaudio import TrueAudio
 from mutagen.wave import WAVE
 from mutagen.wavpack import WavPack
+from mutagen.id3 import TPE1, TIT2, TALB, TCOP, TDRC, TRCK, TCON, TPE2, TPOS, TCOM, TOPE, TLAN, TENC, COMM, WXXX, TXXX
+
+########################################################################################################################
+
+# Mutagen is a Python module to handle audio metadata.
+# It supports ASF, FLAC, MP4, Monkey’s Audio, MP3, Musepack, Ogg Opus, Ogg FLAC, Ogg Speex, Ogg Theora, Ogg Vorbis,
+# True Audio, WavPack, OptimFROG, and AIFF audio files.
+
+########################################################################################################################
 
 
 # Classe para manipulação de arquivos multimídia suportado pelo mutagen

@@ -28,14 +28,21 @@ class Notification(QObject):
 
     # Função para as notificações
     def notify_send(self, app_title=str(), title=str(), message=str(), icon='info', timeout=5):
-        name = 'Sound Tagger'
-        if app_title != str():
-            name += str(' - ' + app_title)
 
-        notification.notify(
-            app_name=name,
-            app_icon=self.get_icons(icon),
-            title=title,
-            message=message,
-            timeout=timeout
-        )
+        self.nm += 1
+        print(f'(\033[92mnotification\033[m) notify count: {self.nm}')
+
+        name = str('Sound Tagger - ' + app_title) if app_title != str() else 'Sound Tagger'
+
+        try:
+            notification.notify(
+                app_name=name,
+                app_icon=self.get_icons(icon),
+                title=title,
+                message=message,
+                timeout=timeout
+            )
+        except Exception as msg:
+            print(f'\033[91m{type(msg)}\033[m')
+            print(f'(\033[92mfile_processor\033[m) {msg}')
+            pass  # aqui eu uso o pass

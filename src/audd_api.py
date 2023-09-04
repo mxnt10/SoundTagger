@@ -3,7 +3,6 @@ from time import sleep
 import requests
 from PyQt5.QtCore import QObject, pyqtSignal
 
-from notification import Notification
 from settings_manager import SettingsManager
 
 DEBUG = False
@@ -16,7 +15,7 @@ class audDAPI(QObject):
     finished = pyqtSignal(dict, int)
     processing = pyqtSignal(str, int)
 
-    def process(self, item, row) -> None:
+    def process(self, item, row, notificator=None) -> None:
         settings = SettingsManager()
 
         try:
@@ -45,8 +44,8 @@ class audDAPI(QObject):
 
         except Exception as msg:
             self.finished.emit({}, row)
-            Notification().notify_send(app_title=self.tr('Error'),
-                                       title=str(),
-                                       message=str(msg),
-                                       icon='error',
-                                       timeout=10)
+            notificator.notify_send(app_title=self.tr('Error'),
+                                    title=str(),
+                                    message=str(msg),
+                                    icon='error',
+                                    timeout=10)

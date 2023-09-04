@@ -3,21 +3,22 @@ import threading
 from PyQt5.QtCore import pyqtSignal, QObject
 
 from settings_manager import SettingsManager
-from notification import Notification
-from acoustid import acoustid
+import acoustid
+
+########################################################################################################################
 
 
 class AcoustIDAPI(QObject):
     processing = pyqtSignal(str, int)
 
-    def process(self, item, row, callback=None) -> None:
+    def process(self, item, row, callback=None, notificator=None) -> None:
         self.processing.emit(self.tr('Searching for the music on the AcoustID API...'), row)
 
-        thread = threading.Thread(target=self.result_thread, args=(item, row, callback))
+        thread = threading.Thread(target=self.result_thread, args=(item, row, callback, notificator))
         thread.start()
 
     # Função para usar em um thread independente
-    def result_thread(self, item, row, callback) -> None:
+    def result_thread(self, item, row, callback, notificator) -> None:
         settings = SettingsManager()
         try:
             result_json = {'status': 'success', 'result': None}
@@ -35,22 +36,22 @@ class AcoustIDAPI(QObject):
 
         except acoustid.NoBackendError:
             callback.emit({}, row)
-            Notification().notify_send(app_title=self.tr('Error'),
-                                       title=self.tr('Dependency Error'),
-                                       message=self.tr('Chromaprint library/tool not found.'),
-                                       icon='error',
-                                       timeout=10)
+            notificator.notify_send(app_title=self.tr('Error'),
+                                    title=self.tr('Dependency Error'),
+                                    message=self.tr('Chromaprint library/tool not found.'),
+                                    icon='error',
+                                    timeout=10)
         except acoustid.FingerprintGenerationError:
             callback.emit({}, row)
-            Notification().notify_send(app_title=self.tr('Error'),
-                                       title=self.tr('Fingerprint Generation Error'),
-                                       message=self.tr('Fingerprint could not be calculated.'),
-                                       icon='error',
-                                       timeout=10)
+            notificator.notify_send(app_title=self.tr('Error'),
+                                    title=self.tr('Fingerprint Generation Error'),
+                                    message=self.tr('Fingerprint could not be calculated.'),
+                                    icon='error',
+                                    timeout=10)
         except acoustid.WebServiceError as exc:
             callback.emit({}, row)
-            Notification().notify_send(app_title=self.tr('Error'),
-                                       title=self.tr('Web Service Error'),
-                                       message=self.tr('Web service request failed' + ': ' + exc.message),
-                                       icon='error',
-                                       timeout=10)
+            notificator.notify_send(app_title=self.tr('Error'),
+                                    title=self.tr('Web Service Error'),
+                                    message=self.tr('Web service request failed' + ': ' + exc.message),
+                                    icon='error',
+                                    timeout=10)

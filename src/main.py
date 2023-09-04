@@ -38,9 +38,13 @@ class SoundTaggerApp(QMainWindow):
         main_widget = QWidget()
         self.setCentralWidget(main_widget)
 
+        # Resolvi centralizar as notificações
+        self.notify = Notification()
+
         # Definição da lista
         self.run_options = RunOptions(self)
         self.list_widget = ListWidget()
+        self.list_widget.set_notificator(self.notify)
         self.list_widget.setWidgetEvent(self.run_options)
         self.list_widget.added.connect(lambda: self.buttons.activeButtons())
         self.list_widget.removed.connect(lambda: self.buttons.deactiveButtons())
@@ -110,10 +114,10 @@ class SoundTaggerApp(QMainWindow):
             self.tagedit.setVisible(False)
 
         else:
-            Notification().notify_send(app_title=self.tr('Information'),
-                                       title=self.tr('Configure an API Key'),
-                                       message=self.tr('No API Key has been configured!'),
-                                       icon='key')
+            self.notify.notify_send(app_title=self.tr('Information'),
+                                    title=self.tr('Configure an API Key'),
+                                    message=self.tr('No API Key has been configured!'),
+                                    icon='key')
 
     # Ativar edição de tags
     def activeTags(self, n) -> None:

@@ -1,7 +1,7 @@
 import multiprocessing
 
 from PyQt5.QtCore import Qt, QThreadPool, QItemSelection, QItemSelectionModel, pyqtSignal, QRect
-from PyQt5.QtGui import QMouseEvent, QPainter, QBrush, QPalette
+from PyQt5.QtGui import QMouseEvent, QPainter, QBrush, QPalette, QPaintEvent, QContextMenuEvent
 from PyQt5.QtWidgets import QTableWidget, QTableWidgetItem, QMenu, QAction, QFileDialog, QHeaderView, QWidget, \
     QAbstractItemView
 
@@ -10,9 +10,9 @@ from checkbox import CheckBox
 from file_processor import FileProcessor
 from list_delegate import ListDelegate
 from list_enum import __CHECK__, __FILES__, __NUMS__, __BUTTONS__, __MESSAGES__
-from music_utils import MusicUtils
-from notification import Notification
 from settings_manager import SettingsManager
+from rename_utils import RenameUtils
+from src.mutagen_utils import MU
 from theme import Theme
 from vboxlayout import VBoxLayout
 from worker import Worker, SharedClass
@@ -78,10 +78,15 @@ class ListWidget(QTableWidget):
         self.start_item = None
         self.end_item = None
         self.current_item = None
+        self.notify = None
 
         self.itemSelectionChanged.connect(self.on_selection_changed)
 
 ########################################################################################################################
+
+    # Setando a função de notificações
+    def set_notificator(self, notificator) -> None:
+        self.notify = notificator
 
     # Ação ao selecionar qualquer item da lista
     def on_selection_changed(self):
@@ -222,7 +227,7 @@ class ListWidget(QTableWidget):
 
             item = self.item(row, __FILES__)
             if item is not None:
-                worker = Worker(processor, item.text(), row, shared_class=shared)
+                worker = Worker(processor, item.text(), row, shared_class=shared, notificator=self.notify)
                 thread_pool.start(worker)
 
     # Função para finalizar o processo conforme o resultado das requisições
@@ -258,12 +263,15 @@ class ListWidget(QTableWidget):
 
             self.update_table(self.tr('Found Music') + ' ( ' + text + ' )', row)
 
-            file = self.item(row, __FILES__)
+            file = self.item(row, __FILES__).text()
             if self.settings.load_int_convert_bool('file_tagger') is True:
-                MusicUtils.apply_tags(file.text(), artist, title, album)
+                mu = MU()
+                mime = mu.isSupported(file)
+                if mime is not None:
+                    mu.applyTags(mime=mime, file=file, keys=normalized_keys)
 
             if self.settings.load_int_convert_bool('rename_file') is True:
-                rename = MusicUtils.rename_file(file.text(), txt)
+                rename = RenameUtils.rename_file(file, txt)
                 self.update_table(rename, row, __FILES__)
 
         else:
@@ -272,11 +280,11 @@ class ListWidget(QTableWidget):
                 error_dict = result['error']
                 error = error_dict['error_message']
                 code = error_dict['error_code']
-                Notification().notify_send(app_title=self.tr('Error'),
-                                           title=self.tr('Error Code') + ': ' + str(code),
-                                           message=error,
-                                           icon='error',
-                                           timeout=10)
+                self.notify.notify_send(app_title=self.tr('Error'),
+                                        title=self.tr('Error Code') + ': ' + str(code),
+                                        message=error,
+                                        icon='error',
+                                        timeout=10)
 
     # Atualizar informações da tabela
     def update_table(self, text, row, col=__MESSAGES__) -> None:
