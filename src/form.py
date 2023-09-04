@@ -5,6 +5,8 @@ from PyQt5.QtWidgets import QHBoxLayout, QLineEdit, QLabel, QTextEdit
 from gridlayout import GridLayout
 from theme import Theme
 
+########################################################################################################################
+
 
 # Customização do layout para personalizar a interface mais facilmente
 class Form(QHBoxLayout):
@@ -76,6 +78,8 @@ class Form(QHBoxLayout):
 
             self.addLayout(self.grid)
 
+########################################################################################################################
+
     # Precisa para setar o texto nos formulários
     def setText(self, txt) -> None:
         self.form.setText(txt)
@@ -88,7 +92,7 @@ class Form(QHBoxLayout):
     def setEnabled(self, bol) -> None:
         self.form.setEnabled(bol)
 
-    def focusStyle(self, event):
+    def focusStyle(self, event) -> None:
         _ = event
         self.grid.customStyle(
             'QWidget {'
@@ -101,7 +105,7 @@ class Form(QHBoxLayout):
             '}'
         )
 
-    def customStyle(self, event):
+    def customStyle(self, event) -> None:
         _ = event
         self.grid.customStyle(
             'QWidget {'
