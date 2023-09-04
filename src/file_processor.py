@@ -7,6 +7,8 @@ from audd_api import audDAPI
 from pydub import AudioSegment
 from settings_manager import SettingsManager
 
+########################################################################################################################
+
 
 # Classe para auxiliar no multiprocessamento
 class FileProcessor(QObject):

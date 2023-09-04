@@ -6,6 +6,8 @@ from edit_tags import editTags
 from theme import Theme
 from vboxlayout import VBoxLayout
 
+########################################################################################################################
+
 
 class editTools(QWidget):
     def __init__(self):
@@ -41,8 +43,12 @@ class editTools(QWidget):
 
         self.setLayout(lay)
 
+########################################################################################################################
+
+    # Setando arquivos de mídia no formulário para exibir as tags
     def setFile(self, file):
         self.tag.setFile(file)
 
+    # Verificando suporte de arquivos de mídia recém importados
     def isFileSupported(self):
         return self.tag.isFileSupported()

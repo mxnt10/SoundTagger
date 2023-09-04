@@ -8,6 +8,8 @@ from settings_manager import SettingsManager
 
 DEBUG = False
 
+########################################################################################################################
+
 
 # Objeto para o uso da API do audD.io
 class audDAPI(QObject):

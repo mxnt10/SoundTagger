@@ -6,10 +6,7 @@ from mutagen_utils import MU
 from scrool_area import ScrollArea
 from vboxlayout import VBoxLayout
 
-
-# Mutagen is a Python module to handle audio metadata.
-# It supports ASF, FLAC, MP4, Monkey’s Audio, MP3, Musepack, Ogg Opus, Ogg FLAC, Ogg Speex, Ogg Theora, Ogg Vorbis,
-# True Audio, WavPack, OptimFROG, and AIFF audio files.
+########################################################################################################################
 
 
 # A classe para edição das tags
@@ -36,7 +33,7 @@ class editTags(QWidget):
         url = Form(self.tr('Url'))
         cd = Form(self.tr('Disc Number'), orig=True)
 
-        self.general = [
+        self.general = (
             [artist, 'artist'],               #
             [title, 'title'],                 #
             [album, 'album'],                 #
@@ -65,9 +62,9 @@ class editTags(QWidget):
             [self.language, 'language'],      #
             [url, 'contact'],                 # flac
             [url, 'website']                  # opus
-        ]
+        )
 
-        self.aiffTag = [
+        self.aiffTag = (
             [copy, 'TCOP'],                  # copyright
             [title, 'TIT2'],                 # título
             [artist, 'TPE1'],                # artista
@@ -86,9 +83,9 @@ class editTags(QWidget):
             [cd, 'TPOS'],                    # disco
             [encoded, 'TENC'],               # encoded by
             [composer, 'TCOM']               # compositor
-        ]
+        )
 
-        self.mp4tag = [
+        self.mp4tag = (
             [artist, '©ART'],        # artist
             [title, '©nam'],         # title
             [album, '©alb'],         # album
@@ -103,9 +100,9 @@ class editTags(QWidget):
             [encoded, '©enc'],       # encoded by
             [cd, 'disk'],            # disk number
             [url, 'purl']            # url
-        ]
+        )
 
-        self.apeTag = [
+        self.apeTag = (
             [artist, 'Artist'],
             [title, 'Title'],
             [album, 'Album'],
@@ -122,9 +119,9 @@ class editTags(QWidget):
             [copy, 'Copyright'],
             [encoded, 'Encoded By'],
             [comments, 'Comment']
-        ]
+        )
 
-        self.asfTag = [
+        self.asfTag = (
             [artist, 'Author'],
             [title, 'Title'],
             [album, 'AlbumTitle'],
@@ -141,9 +138,9 @@ class editTags(QWidget):
             [copy, 'Copyright'],
             [encoded, 'EncodedBy'],
             [comments, 'Description']
-        ]
+        )
 
-        self.mpcTag = [
+        self.mpcTag = (
             [artist, 'ARTIST'],
             [title, 'TITLE'],
             [album, 'ALBUM'],
@@ -161,7 +158,7 @@ class editTags(QWidget):
             [copy, 'COPYRIGHT'],
             [encoded, 'ENCODED-BY'],
             [comments, 'COMMENT']
-        ]
+        )
 
         lay_cd = HBoxLayout(margin=0, space=0, array_widgets=[album, cd])
         lay_track = HBoxLayout(margin=0, space=0, array_widgets=[date, first_track, end_track])

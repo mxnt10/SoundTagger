@@ -1,6 +1,6 @@
 import sys
 
-from PyQt5.QtGui import QMouseEvent, QCloseEvent
+from PyQt5.QtGui import QMouseEvent, QCloseEvent, QContextMenuEvent
 from PyQt5.QtWidgets import QApplication, QWidget, QMainWindow, QDesktopWidget, QStackedWidget, QSplitter, QMenu, \
     QAction
 
@@ -96,6 +96,7 @@ class SoundTaggerApp(QMainWindow):
         qr.moveCenter(QDesktopWidget().availableGeometry().center())
         self.move(qr.topLeft())
 
+        # Resolvendo um probleminha, run_options não está vinculado a nenhum widget, então ele abre
         self.run_options.close()
 
 ########################################################################################################################
@@ -128,7 +129,8 @@ class SoundTaggerApp(QMainWindow):
         if self.run_options.isHidden():
             self.tagedit.setVisible(False)
 
-    def changeStack(self, n):
+    # Função pra alterar as interfaces do programa
+    def changeStack(self, n) -> None:
         if n > 0:
             if not self.run_options.isHidden():
                 self.run_options.close()
@@ -148,7 +150,7 @@ class SoundTaggerApp(QMainWindow):
         event.accept()
 
     # Menu de contexto de escopo global
-    def contextMenuEvent(self, event):
+    def contextMenuEvent(self, event: QContextMenuEvent) -> None:
         menu = QMenu(self)
 
         add = QAction(self.tr('Add Files'), self)

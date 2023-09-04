@@ -81,7 +81,7 @@ class ListWidget(QTableWidget):
 
         self.itemSelectionChanged.connect(self.on_selection_changed)
 
-    ########################################################################################################################
+########################################################################################################################
 
     # Ação ao selecionar qualquer item da lista
     def on_selection_changed(self):
@@ -227,7 +227,7 @@ class ListWidget(QTableWidget):
 
     # Função para finalizar o processo conforme o resultado das requisições
     def file_tagger(self, result, row) -> None:
-        print(result)
+        print(f'(\033[92mlist\033[m) {result}')
         if result.get('status') == 'success' and not result.get('result') is None:
 
             result_dict = result['result']
@@ -320,10 +320,10 @@ class ListWidget(QTableWidget):
             _ = msg
             return -1
 
-    ########################################################################################################################
+########################################################################################################################
 
     # Evento para gerar o menu de contexto para os arquivos na lista
-    def contextMenuEvent(self, event) -> None:
+    def contextMenuEvent(self, event: QContextMenuEvent) -> None:
         menu = QMenu(self)
 
         add = QAction(self.tr('Add Files'), self)
@@ -417,7 +417,7 @@ class ListWidget(QTableWidget):
         super().mousePressEvent(event)
 
     # Função para pintar a linha selecionada
-    def paintEvent(self, event):
+    def paintEvent(self, event: QPaintEvent) -> None:
         super().paintEvent(event)
 
         painter = QPainter(self.viewport())

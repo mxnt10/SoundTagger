@@ -1,10 +1,15 @@
 import os
 
+from PyQt5.QtCore import QObject
+
 from plyer import notification
 
 
 # Função básica para emitir notificações do programa
-class Notification:
+class Notification(QObject):
+    def __init__(self):
+        super().__init__()
+        self.nm = 0
 
     # Função para achar os ícones das notificações
     @staticmethod

@@ -52,10 +52,10 @@ class MU(QObject):
     def isSupported(self, file):
         try:
             s = self.supported[self.idx(self.supported, str(File(file).info)[1:].split(' ')[0].split('.')[1])][0]
-            print('select: ' + s)
+            print(f'(\033[92mmutagen_utils\033[m) select: {s}')
             return s
         except Exception as msg:
-            print(msg)
+            print(f'(\033[92mmutagen_utils\033[m) {msg}')
             return None
 
     # Usada para retornar posição de uma array dentro de outra array
@@ -78,9 +78,9 @@ class MU(QObject):
                     media = sub[1](file)
                     break
         except Exception as msg:  # tentando pelo sufixo em caso de engano
-            print(msg)
+            print(f'(\033[92mmutagen_utils\033[m) {msg}')
             s = self.supported[self.idx(self.supported, QFileInfo(file).suffix())][0]
-            print('select: ' + s)
+            print(f'(\033[92mmutagen_utils\033[m) select: {s}')
             for sub in self.supported:
                 if s == sub[0]:
                     try:
@@ -92,7 +92,7 @@ class MU(QObject):
             pass
 
         # debug não tirar
-        print(media)
+        print(f'(\033[92mmutagen_utils\033[m) {media}')
 
         for tag in edit:
             if tag[0].text() != str(): continue
