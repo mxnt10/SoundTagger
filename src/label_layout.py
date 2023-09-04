@@ -1,4 +1,4 @@
-from PyQt5.QtGui import QFont, QPalette, QColor
+from PyQt5.QtGui import QFont, QPalette
 from PyQt5.QtWidgets import QHBoxLayout, QLabel
 
 
@@ -33,7 +33,7 @@ class LabelLayout(QHBoxLayout):
 
             if blue:
                 pal = QPalette()
-                pal.setColor(QPalette.WindowText, QColor(89, 171, 227))
+                pal.setColor(QPalette.WindowText, pal.color(QPalette.Highlight))
                 self.label2.setPalette(pal)
 
             self.addWidget(self.label2)
