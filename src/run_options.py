@@ -1,4 +1,5 @@
 from PyQt5.QtCore import Qt, pyqtSignal, QSize
+from PyQt5.QtGui import QShowEvent, QMouseEvent
 from PyQt5.QtWidgets import QWidget
 from superqt import QLabeledRangeSlider
 
@@ -86,9 +87,9 @@ class RunOptions(QWidget):
 ########################################################################################################################
 
     # Ação ao iniciar a interface
-    def showEvent(self, event):
+    def showEvent(self, event: QShowEvent) -> None:
         self.set_resize(self.point)
 
     # Trancando o clique do mouse nesse widget
-    def mouseReleaseEvent(self, event):
+    def mouseReleaseEvent(self, event: QMouseEvent) -> None:
         pass
