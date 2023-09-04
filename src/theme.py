@@ -44,7 +44,7 @@ class Theme(QObject):
         for pal in colors:
             try:
                 c = p.color(pal[1])
-                print('[' + pal[0] + ', QColor(' + str(c.red()) + ', ' + str(c.green()) + ', ' + str(c.blue()) + ')],')
+                print(f'\033[93m[{pal[0]}, QColor({c.red()}, {c.green()}, {c.blue()})]\033[m')
             except Exception as msg:
                 _ = msg
                 pass
