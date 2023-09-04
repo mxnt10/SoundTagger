@@ -31,5 +31,6 @@ class GridLayout(QGridLayout):
             else:
                 self.addWidget(layout, 0, 0)
 
-    def customStyle(self, style):
+    # O widget do qtextedit é que vai ser customizado
+    def customStyle(self, style) -> None:
         self.widget.setStyleSheet(style)
