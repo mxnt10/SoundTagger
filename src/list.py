@@ -50,27 +50,27 @@ class ListWidget(QTableWidget):
         self.t = Theme()
         self.setItemDelegate(ListDelegate(self))
         self.setStyleSheet(
-            'QTableWidget {'
-            '    border: none;'
-            '    background-color: transparent;'
-            '}'
-            'QScrollBar {'
-            '    border: none;'
-            '    background-color: transparent;'
-            '    width: 10px;'
-            '}'
-            'QScrollBar::handle {'
-            '    background-color: ' + self.t.color_palette(QPalette.Light) + ';'
-            '    min-height: 10px;'
-            '    border-radius: 5px;'
-            '    border: 2px solid transparent;'
-            '}'
-            'QScrollBar::add-line, QScrollBar::sub-line {'
-            '    background: none;'
-            '}'
-            'QScrollBar::add-page, QScrollBar::sub-page {'
-            '    background: none;'
-            '}'
+            f'QTableWidget {{'
+            f'    border: none;'
+            f'    background-color: transparent;'
+            f'}}'
+            f'QScrollBar {{'
+            f'    border: none;'
+            f'    background-color: transparent;'
+            f'    width: 10px;'
+            f'}}'
+            f'QScrollBar::handle {{'
+            f'    background-color: {self.t.color_palette(QPalette.Light)};'
+            f'    min-height: 10px;'
+            f'    border-radius: 5px;'
+            f'    border: 2px solid transparent;'
+            f'}}'
+            f'QScrollBar::add-line, QScrollBar::sub-line {{'
+            f'    background: none;'
+            f'}}'
+            f'QScrollBar::add-page, QScrollBar::sub-page {{'
+            f'    background: none;'
+            f'}}'
         )
 
         self.current_item_index = None
@@ -142,7 +142,7 @@ class ListWidget(QTableWidget):
             self.setCellWidget(row_count, __CHECK__, w_ck)
             self.setItem(row_count, __NUMS__, nm)
             self.setItem(row_count, __FILES__, QTableWidgetItem(file))
-            self.setItem(row_count, __MESSAGES__, QTableWidgetItem(self.tr('Selected for Search') + '!'))
+            self.setItem(row_count, __MESSAGES__, QTableWidgetItem(f'{self.tr("Selected for Search")}!'))
             self.setCellWidget(row_count, __BUTTONS__, w_btn)
 
             rm_button.clicked.connect(self.remove_current_item)
@@ -258,10 +258,10 @@ class ListWidget(QTableWidget):
             txt += text
             if album:
                 if title or artist:
-                    text += ' --- ' + self.tr('Album') + ': '
+                    text += f' --- {self.tr("Album")}: '
                 text += str(album)
 
-            self.update_table(self.tr('Found Music') + ' ( ' + text + ' )', row)
+            self.update_table(f'{self.tr("Found Music")} ( {text} )', row)
 
             file = self.item(row, __FILES__).text()
             if self.settings.load_int_convert_bool('file_tagger') is True:
@@ -296,9 +296,9 @@ class ListWidget(QTableWidget):
         if ck:
             row = self.indexAt(ck.parent().pos()).row()
             if var == 2:
-                self.update_table(self.tr(self.tr('Selected for Search') + '!'), row)
+                self.update_table(f'{self.tr("Selected for Search")}!', row)
             else:
-                self.update_table(self.tr(self.tr('Unselected File') + '!'), row)
+                self.update_table(f'{self.tr("Unselected File")}!', row)
 
     # Marca todos os checkbox da lista
     def select_all_ck(self) -> None:

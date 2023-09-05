@@ -22,7 +22,7 @@ class About(QWidget):
     def __init__(self):
         super().__init__()
 
-        self.label = LabelLayout('SoundTagger ' + self.tr('Version') + ' ' + VERSION, pointsize=12, one=True)
+        self.label = LabelLayout(f'SoundTagger {self.tr("Version")} {VERSION}', pointsize=12, one=True)
 
         self.icon = QLabel()
         self.pixmap = QPixmap(IconPrg.get_icon(string=True))

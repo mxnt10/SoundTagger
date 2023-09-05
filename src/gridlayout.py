@@ -12,13 +12,13 @@ class GridLayout(QGridLayout):
         super().__init__(parent)
         self.setContentsMargins(margin, margin, margin, margin)
         self.setSpacing(space)
+        t = Theme()
 
-        border = ' border: 1px solid ' + Theme.color_palette(QPalette.Light) + ';'
+        border = f' border: 1px solid {t.color_palette(QPalette.Light)};'
         if on_border is False:
             border = str()
 
-        style = 'background-color: ' + Theme.color_palette(QPalette.Window) + \
-                '; border-radius: ' + radius + 'px;' + border
+        style = f'background-color: {t.color_palette(QPalette.Window)}; border-radius: {radius}px;{border}'
 
         self.widget = QWidget()
         self.widget.setStyleSheet(style)

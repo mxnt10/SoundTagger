@@ -19,7 +19,7 @@ class audDAPI(QObject):
         settings = SettingsManager()
 
         try:
-            self.processing.emit(self.tr('Searching for the music on the audD.io API...'), row)
+            self.processing.emit(f'{self.tr("Searching for the music on the audD.io API")}...', row)
             if DEBUG:  # Mais rápido que a requisição, para testes rápidos
 
                 sleep(1)

@@ -61,12 +61,12 @@ class Button(QPushButton):
     # Função para setar os ícones
     def set_icon(self, txt):
         ext = 'svg'
-        if os.path.exists(self.def_icon + '/' + txt + '.' + ext):
-            return QIcon(self.def_icon + '/' + txt + '.' + ext)
-        if os.path.exists(self.rel_icon + '/' + txt + '.' + ext):
-            return QIcon(self.rel_icon + '/' + txt + '.' + ext)
-        if os.path.exists(self.alt_icon + '/' + txt + '.' + ext):
-            return QIcon(self.alt_icon + '/' + txt + '.' + ext)
+        if os.path.exists(f'{self.def_icon}/{txt}.{ext}'):
+            return QIcon(f'{self.def_icon}/{txt}.{ext}')
+        if os.path.exists(f'{self.rel_icon}/{txt}.{ext}'):
+            return QIcon(f'{self.rel_icon}/{txt}.{ext}')
+        if os.path.exists(f'{self.alt_icon}/{txt}.{ext}'):
+            return QIcon(f'{self.alt_icon}/{txt}.{ext}')
         return self.default_icon(txt)
 
 ########################################################################################################################

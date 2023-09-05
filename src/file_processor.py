@@ -18,7 +18,7 @@ class FileProcessor(QObject):
 
     # Função para iniciar o multiprocessamento incluíndo a preparação da mídia para a busca
     def run(self, audio_path, row, callback=None, notificator=None) -> None:
-        self.return_process.emit(self.tr('Preparing File') + '...', row)
+        self.return_process.emit(f'{self.tr("Preparing File")}...', row)
         sett = SettingsManager()
         select_api = sett.priority_api()
 

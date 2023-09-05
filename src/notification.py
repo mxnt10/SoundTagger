@@ -18,12 +18,12 @@ class Notification(QObject):
         rel_icon = os.path.abspath("../notification")
         alt_icon = os.path.abspath("notification")
 
-        if os.path.exists(def_icon + '/' + txt + '.png'):
-            return def_icon + '/' + txt + '.png'
-        if os.path.exists(rel_icon + '/' + txt + '.png'):
-            return rel_icon + '/' + txt + '.png'
-        if os.path.exists(alt_icon + '/' + txt + '.png'):
-            return alt_icon + '/' + txt + '.png'
+        if os.path.exists(f'{def_icon}/{txt}.png'):
+            return f'{def_icon}/{txt}.png'
+        if os.path.exists(f'{rel_icon}/{txt}.png'):
+            return f'{rel_icon}/{txt}.png'
+        if os.path.exists(f'{alt_icon}/{txt}.png'):
+            return f'{alt_icon}/{txt}.png'
         return str()
 
     # Função para as notificações
@@ -32,7 +32,7 @@ class Notification(QObject):
         self.nm += 1
         print(f'(\033[92mnotification\033[m) notify count: {self.nm}')
 
-        name = str('Sound Tagger - ' + app_title) if app_title != str() else 'Sound Tagger'
+        name = f'Sound Tagger - {app_title}' if app_title != str() else 'Sound Tagger'
 
         try:
             notification.notify(

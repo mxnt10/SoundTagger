@@ -28,8 +28,8 @@ class Background(QObject):
     # Gerando a folha de estilo
     def get_background(self):
         return str(
-            'QMainWindow {'
-            '    border-image: url("' + self.bg_dir + '/bg' + self.random() + '.jpg");'
-            '    background-position: center; '
-            '}'
+            f'QMainWindow {{'
+            f'    border-image: url("{self.bg_dir}/bg{self.random()}.jpg");'
+            f'    background-position: center; '
+            f'}}'
         )

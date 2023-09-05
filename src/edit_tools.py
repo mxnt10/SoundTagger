@@ -20,23 +20,24 @@ class editTools(QWidget):
         tab.addTab(self.tag, 'IdTags')
 
         tab.setStyleSheet(
-            'QTabWidget::pane {'
-            '    background-color: transparent;'
-            '    border: 1px solid ' + Theme.color_palette(QPalette.Light) + ';'
-            '    border-top-right-radius: 14px;'
-            '    border-bottom-left-radius: 14px;'
-            '    border-bottom-right-radius: 14px;'
-            '    margin-left: 1;'
-            '}'
-            'QTabBar::tab {'
-            '    border: 1px solid ' + Theme.color_palette(QPalette.Light) + ';'
-            '    border-top-left-radius: 10px;'
-            '    border-top-right-radius: 10px;'
-            '    padding: 5 25;'
-            '}'
-            'QTabBar::tab:selected {'
-            '    background-color: ' + Theme.color_palette(QPalette.Base) + ';'
-            '}')
+            f'QTabWidget::pane {{'
+            f'    background-color: transparent;'
+            f'    border: 1px solid {Theme.color_palette(QPalette.Light)};'
+            f'    border-top-right-radius: 14px;'
+            f'    border-bottom-left-radius: 14px;'
+            f'    border-bottom-right-radius: 14px;'
+            f'    margin-left: 1;'
+            f'}}'
+            f'QTabBar::tab {{'
+            f'    border: 1px solid {Theme.color_palette(QPalette.Light)};'
+            f'    border-top-left-radius: 10px;'
+            f'    border-top-right-radius: 10px;'
+            f'    padding: 5 25;'
+            f'}}'
+            f'QTabBar::tab:selected {{'
+            f'    background-color: {Theme.color_palette(QPalette.Base)};'
+            f'}}'
+        )
 
         lay = VBoxLayout()
         lay.addWidget(tab)

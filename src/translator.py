@@ -21,5 +21,5 @@ class Translator(QObject):
     # Função para aplicar o idioma
     def translate(self) -> None:
         translator = QTranslator()
-        if translator.load(self.get_lang() + '/qt_' + QLocale.system().name().split('_')[0] + '.qm'):
+        if translator.load(f'{self.get_lang()}/qt_{QLocale.system().name().split("_")[0]}.qm'):
             QApplication.instance().installTranslator(translator)

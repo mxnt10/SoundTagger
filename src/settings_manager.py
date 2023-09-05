@@ -9,7 +9,7 @@ class SettingsManager:
     # Função para definir a api prioritária
     def priority_api(self):
         for api in self.load_priorities_API().split(':'):
-            if self.load_api_key(api + '_API') != str():
+            if self.load_api_key(f'{api}_API') != str():
                 return api
         return None
 
