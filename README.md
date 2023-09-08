@@ -6,24 +6,24 @@ conforme os resultados obtidos.
 
 ### Suporte de Mídias Testados
 
-✔️ Suportado ❌ Não suportado ➖ Não testado
+✅️ Suportado ⛔ Não suportado ➖ Não testado
 
 | Formatos       | mutagen(view) | mutagen(edit) | acoustID | audD.io |
 |----------------|:-------------:|:-------------:|:--------:|:-------:|
 | `aac`          |       ➖       |       ➖       |    ➖     |    ➖    |
 | `ac3`          |       ➖       |       ➖       |    ➖     |    ➖    |
-| `aiff`         |      ✔️       |       ➖       |    ➖     |    ➖    |
-| `ape`          |      ✔️       |       ➖       |    ➖     |    ➖    |
-| `asf wma`      |      ✔️       |       ➖       |    ➖     |    ➖    |
-| `flac`         |      ✔️       |       ➖       |    ➖     |    ➖    |
-| `mp3`          |      ✔️️      |       ➖       |    ✔️    |   ✔️    |
-| `mp4 m4a`      |      ✔️       |       ➖       |    ➖     |    ➖    |
-| `mpc`          |      ✔️       |       ➖       |    ➖     |    ➖    |
-| `ofr ofs`      |       ➖       |       ➖       |    ❌     |    ➖    |
-| `ogg ogv opus` |      ✔️       |       ➖       |    ➖     |    ➖    |
-| `tta`          |      ✔️       |       ➖       |    ➖     |    ➖    |
-| `wav`          |      ✔️       |       ➖       |    ➖     |    ➖    |
-| `wv`           |      ✔️       |       ➖       |    ➖     |    ➖    |
+| `aiff`         |       ✅       |       ➖       |    ➖     |    ➖    |
+| `ape`          |       ✅       |       ➖       |    ➖     |    ➖    |
+| `asf wma`      |      ✅️       |       ➖       |    ➖     |    ➖    |
+| `flac`         |       ✅       |       ➖       |    ➖     |    ➖    |
+| `mp3`          |       ✅       |       ✅       |    ✅     |   ✅️    |
+| `mp4 m4a`      |      ✅️       |      ✅️       | ✅ `m4a`  |    ➖    |
+| `mpc`          |      ✅️       |       ➖       |    ➖     |    ➖    |
+| `ofr ofs`      |       ➖       |       ➖       |    ⛔     |    ➖    |
+| `ogg ogv opus` |      ✅️       |       ➖       |    ➖     |    ➖    |
+| `tta`          |      ✅️       |       ➖       |    ➖     |    ➖    |
+| `wav`          |      ✅️       |       ➖       |    ➖     |    ➖    |
+| `wv`           |      ✅️       |       ➖       |    ➖     |    ➖    |
  
 ### Recursos do Programa até o Momento
 
