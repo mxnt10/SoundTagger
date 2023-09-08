@@ -15,6 +15,7 @@ class editTags(QWidget):
         super().__init__()
         self.media = None
         self.support = False
+        self.m = MU()
 
         artist = Form(self.tr('Artist'))
         title = Form(self.tr('Title'))
@@ -176,6 +177,14 @@ class editTags(QWidget):
 
         self.setLayout(main_layout)
 
+        # Vai ser usado para pescar as informações para gerar uma dict
+        self.order = [
+            artist, title, album, cd, album_artist, genre, date, first_track, end_track, composer,
+            self.orig_artist, copy, self.language, encoded, url, comments
+        ]
+
+########################################################################################################################
+
     # Setando o arquivo para a leitura das tags
     def setFile(self, file) -> None:
         for tag in self.general:
@@ -184,27 +193,39 @@ class editTags(QWidget):
         self.language.setEnabled(True)
 
         self.support = False
-        mu = MU()
-        mime = mu.isSupported(file)
+        mime = self.m.isSupported(file)
 
         if mime is not None:
-            if mu.equal(mime, ['aiff', 'mp3', 'trueaudio', 'wave']):
-                mu.getTags(mime, file, self.aiffTag)
+            if self.m.equal(mime, ['aiff', 'mp3', 'trueaudio', 'wave']):
+                self.m.getTags(mime, file, self.aiffTag)
             elif mime == 'mp4':
                 self.orig_artist.setEnabled(False)
                 self.language.setEnabled(False)
-                mu.getTags(mime, file, self.mp4tag)
+                self.m.getTags(mime, file, self.mp4tag)
             elif mime == 'monkeysaudio':
-                mu.getTags(mime, file, self.apeTag)
+                self.m.getTags(mime, file, self.apeTag)
             elif mime == 'asf':
-                mu.getTags(mime, file, self.asfTag)
+                self.m.getTags(mime, file, self.asfTag)
             elif mime == 'musepack':
-                mu.getTags(mime, file, self.mpcTag)
+                self.m.getTags(mime, file, self.mpcTag)
             else:
-                mu.getTags(mime, file, self.general)
+                self.m.getTags(mime, file, self.general)
 
             self.support = True
 
     # Verificando se o arquivo é suportado pelo mutagen
     def isFileSupported(self):
         return self.support
+
+    # Gerar um arquivo de dicionário pra compatibilizar com a função para gravar as id tags nos arquivos de mídia
+    def generateDict(self):
+        obj = {}
+        i = 0
+        for form in self.order:
+            obj[self.m.orderTags()[i]] = str(form.text())
+            i += 1
+        return obj
+
+    # Gravando as id tags nos arquivos de mídia
+    def applyTags(self, file):
+        self.m.applyTags(mime=self.m.isSupported(file), file=file, keys=self.generateDict())
