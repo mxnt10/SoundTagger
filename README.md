@@ -4,7 +4,7 @@ Programa que tem por objetivo não apenas usar impressão digital acústica para
 usar essas requisições para alterar o metadata (id tag) dos arquivos e se preferir, renomear os arquivos multimídia
 conforme os resultados obtidos.
 
-### Suporte de Mídias Testados
+### Suporte de Mídias Testados 
 
 ✅️ Suportado 🟥 Não suportado 🟨 Não testado
 
