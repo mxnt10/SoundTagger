@@ -15,6 +15,7 @@ class audDAPI(QObject):
     finished = pyqtSignal(dict, int)
     processing = pyqtSignal(str, int)
 
+    # Buscando informações de mídia na API
     def process(self, item, row, notificator=None) -> None:
         settings = SettingsManager()
 

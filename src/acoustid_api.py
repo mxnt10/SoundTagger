@@ -8,9 +8,11 @@ import acoustid
 ########################################################################################################################
 
 
+# Classe para a api do AcoustID
 class AcoustIDAPI(QObject):
     processing = pyqtSignal(str, int)
 
+    # Buscando informações de mídia na API
     def process(self, item, row, callback=None, notificator=None) -> None:
         self.processing.emit(f'{self.tr("Searching for the music on the AcoustID API")}...', row)
 

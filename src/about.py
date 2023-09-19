@@ -50,13 +50,13 @@ class About(QWidget):
 
         # Centralizando os widgets no layout
         for i in range(lay.count()):
-            item = lay.itemAt(i)
-            item.setAlignment(Qt.AlignCenter)
+            lay.itemAt(i).setAlignment(Qt.AlignCenter)
 
         self.setLayout(GridLayout(margin=0, layout=lay))
 
 ########################################################################################################################
 
+    # Redirecionando o diálogo sobre conforme a necessidade
     def resizeEvent(self, event: QResizeEvent) -> None:
         s = int(self.size().height() / 4)
         self.icon.setPixmap(self.pixmap.scaled(s, s, Qt.KeepAspectRatio, Qt.SmoothTransformation))
