@@ -9,8 +9,8 @@ class Theme(QObject):
     def __init__(self):
         super().__init__()
         self.__LINE__ = 150 if QPalette().color(QPalette.Window) == QColor(42, 46, 50) else 255
-        self.__SELECT__ = 70 if QPalette().color(QPalette.Window) == QColor(42, 46, 50) else 90
-        self.__UNSELECT__ = 20 if QPalette().color(QPalette.Window) == QColor(42, 46, 50) else 50
+        self.__SELECT__ = 70 if QPalette().color(QPalette.Window) == QColor(42, 46, 50) else 50
+        self.__UNSELECT__ = 20 if QPalette().color(QPalette.Window) == QColor(42, 46, 50) else 40
 
     # Depuração pura para visualização de cores
     @staticmethod
@@ -99,7 +99,6 @@ class Theme(QObject):
         )
 
         p = QPalette()
-
         if p.color(QPalette.Window) == QColor(42, 46, 50):
             for c in darkTheme:
                 p.setColor(c[0], c[1])
@@ -113,22 +112,19 @@ class Theme(QObject):
     # Definir uma cor para a folha de estilo
     @staticmethod
     def color_palette(palete):
-        pal = QPalette()
-        c = pal.color(palete)
+        c = QPalette().color(palete)
         return 'rgb(%s, %s, %s)' % (c.red(), c.green(), c.blue())
 
     # Definir uma cor semi-transparente para a folha de estilo
     @staticmethod
     def color_rgba(palete, opacy):
-        pal = QPalette()
-        c = pal.color(palete)
+        c = QPalette().color(palete)
         return 'rgba(%s, %s, %s, %s)' % (c.red(), c.green(), c.blue(), str(opacy))
 
     # Definindo a linha dos formulários
     @staticmethod
     def color_line():
         p = QPalette()
-
         if p.color(QPalette.Window) == QColor(42, 46, 50):
             c = p.color(QPalette.Base)
         elif p.color(QPalette.Window) == QColor(239, 240, 241):
