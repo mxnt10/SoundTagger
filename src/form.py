@@ -117,3 +117,7 @@ class Form(QHBoxLayout):
             f'    border-bottom-right-radius: 18px;'
             f'}}'
         )
+
+    # Limpar o foco dos widgets de form
+    def clearFocus(self) -> None:
+        self.form.clearFocus()
