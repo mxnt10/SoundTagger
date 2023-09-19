@@ -12,7 +12,7 @@ from list_delegate import ListDelegate
 from list_enum import __CHECK__, __FILES__, __NUMS__, __BUTTONS__, __MESSAGES__
 from settings_manager import SettingsManager
 from rename_utils import RenameUtils
-from src.mutagen_utils import MU
+from mutagen_utils import MU
 from theme import Theme
 from vboxlayout import VBoxLayout
 from worker import Worker, SharedClass
@@ -124,7 +124,7 @@ class ListWidget(QTableWidget):
 
             nm = QTableWidgetItem(str(row_count + 1) + '. ')
             nm.setTextAlignment(Qt.AlignCenter | Qt.AlignRight)
-            rm_button = Button("remove-list", tooltip=self.tr('Remove File'), size=31)
+            rm_button = Button("remove-list", tooltip=self.tr('Remove File'), size=31, click=0)
 
             select_ck = CheckBox(checked=True)
             select_ck.stateChanged.connect(self.update_messages)

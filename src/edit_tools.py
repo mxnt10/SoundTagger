@@ -23,16 +23,15 @@ class editTools(QWidget):
         self.tab.setFocusPolicy(Qt.NoFocus)
         self.tab.addTab(self.tag, 'IdTags')
 
-        apply = Button('apply')
+        apply = Button(text='apply', size=42, ajust=8, select=3, click=2)
         apply.clicked.connect(self.setApply)
-        cancel = Button('clean')
+        cancel = Button(text='clean', size=42, ajust=8, select=3, click=2)
         cancel.clicked.connect(self.setCancel)
 
-        buttons = HBoxLayout(array_widgets=[apply, cancel, 'S'], margin=0)
+        buttons = HBoxLayout(array_widgets=[apply, cancel, 'S'], margin=3)
 
         for i in range(buttons.count()):
-            w = buttons.itemAt(i)
-            w.setAlignment(Qt.AlignLeft)
+            buttons.itemAt(i).setAlignment(Qt.AlignLeft)
 
         # Aplicando uma folha de estilo
         t = Theme()
@@ -62,7 +61,7 @@ class editTools(QWidget):
 ########################################################################################################################
 
     # Setando arquivos de mídia no formulário para exibir as tags
-    def setFile(self, file):
+    def setFile(self, file) -> None:
         self.tag.setFile(file)
         self.selected_change = file
 
@@ -71,12 +70,12 @@ class editTools(QWidget):
         return self.tag.isFileSupported()
 
     # Aplicando alterações de tags
-    def setApply(self):
+    def setApply(self) -> None:
         if self.tab.currentIndex() == 0:
             self.tag.applyTags(self.selected_change)
 
     # Descartar alterações de tags
-    def setCancel(self):
+    def setCancel(self) -> None:
         if self.tab.currentIndex() == 0:
             if self.selected_change is not None:
                 self.tag.setFile(self.selected_change)
