@@ -32,11 +32,11 @@ class Controls(HBoxLayout):
         self.run.height.connect(lambda point: self.control_point.emit(point))
         self.run.clicked.connect(lambda: self.control_options.emit())
         main = Button('return', tooltip=self.tr('Return to Main'))
-        main.clicked.connect(self.setMain)
+        main.clicked.connect(self.set_main)
         settings = Button('settings', tooltip=self.tr('Settings'))
-        settings.clicked.connect(self.setSettings)
+        settings.clicked.connect(self.set_settings)
         about = Button('about', tooltip=self.tr('About'))
-        about.clicked.connect(self.setAbout)
+        about.clicked.connect(self.set_about)
 
         # Controle do botão main
         self.v_main = QWidget()
@@ -60,22 +60,22 @@ class Controls(HBoxLayout):
         self.addStretch(1)
         self.addWidget(self.v_main)
         self.addWidget(f_buttons)
-        self.deactiveButtons()
+        self.deactive_buttons()
 
     # Botão para retornar a lista de arquivos de mídia
-    def setMain(self) -> None:
+    def set_main(self) -> None:
         self.v_buttons.setVisible(True)
         self.v_main.setVisible(False)
         self.control_main.emit()
 
     # Botão de configurações
-    def setSettings(self) -> None:
+    def set_settings(self) -> None:
         self.v_buttons.setVisible(False)
         self.v_main.setVisible(True)
         self.control_settings.emit()
 
     # Botão de sobre
-    def setAbout(self) -> None:
+    def set_about(self) -> None:
         self.v_buttons.setVisible(False)
         self.v_main.setVisible(True)
         self.control_about.emit()
@@ -85,14 +85,14 @@ class Controls(HBoxLayout):
         return self.run.mapToGlobal(self.run.pos())
 
     # Ativar botões ao importar algum arquivo de mídia
-    def deactiveButtons(self) -> None:
+    def deactive_buttons(self) -> None:
         self.remove.setVisible(False)
         self.clean.setVisible(False)
         self.run.setVisible(False)
         self.bool = False
 
     # Ativar botões ao importar algum arquivo de mídia
-    def activeButtons(self) -> None:
+    def active_buttons(self) -> None:
         self.remove.setVisible(True)
         self.clean.setVisible(True)
         self.run.setVisible(True)
