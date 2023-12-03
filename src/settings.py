@@ -28,10 +28,10 @@ class Settings(QWidget):
         self.list_widget.model().rowsMoved.connect(self.onCurrentRowChanged)
 
         # Configuração das APIs
-        self.audd_api = Form(self.tr('audD API Token'), min_size=110, d=str())
+        self.audd_api = Form(self.tr('audD API Token'), min_size=110, d='')
         self.audd_api.setText(str(self.settings.load_api_key('audD_API')))
         self.audd_api.changeText.connect(lambda val: self.changeValues('audD_API', val))
-        self.acoustid_api = Form(self.tr('AcoustID API Key'), min_size=110, d=str())
+        self.acoustid_api = Form(self.tr('AcoustID API Key'), min_size=110, d='')
         self.acoustid_api.setText(str(self.settings.load_api_key('acoustID_API')))
         self.acoustid_api.changeText.connect(lambda val: self.changeValues('acoustID_API', val))
 
@@ -68,10 +68,10 @@ class Settings(QWidget):
     # Limpando as configurações das chaves de APIS
     def cleanValues(self, key):
         if key == 'audD_API':
-            self.audd_api.setText(str())
+            self.audd_api.set_text('')
             return
         if key == 'acoustID_API':
-            self.acoustid_api.setText(str())
+            self.acoustid_api.set_text('')
 
     # Salvando a lista de prioridade das APIs
     def onCurrentRowChanged(self) -> None:

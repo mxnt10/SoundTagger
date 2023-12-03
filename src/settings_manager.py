@@ -9,7 +9,7 @@ class SettingsManager:
     # Função para definir a api prioritária
     def priority_api(self):
         for api in self.load_priorities_API().split(':'):
-            if self.load_api_key(f'{api}_API') != str():
+            if self.load_api_key(f'{api}_API') != '':
                 return api
         return None
 
@@ -20,7 +20,7 @@ class SettingsManager:
 
     # Carregar o valor da api audd
     def load_api_key(self, key):
-        return self.settings.value(key, defaultValue=str())
+        return self.settings.value(key, defaultValue='')
 
     # Carregar configurações de valores numéricos
     def load_int_config(self, key, defaultValue=0):

@@ -24,15 +24,15 @@ class Notification(QObject):
             return f'{rel_icon}/{txt}.png'
         if os.path.exists(f'{alt_icon}/{txt}.png'):
             return f'{alt_icon}/{txt}.png'
-        return str()
+        return ''
 
     # Função para as notificações
-    def notify_send(self, app_title=str(), title=str(), message=str(), icon='info', timeout=5):
+    def notify_send(self, app_title='', title='', message='', icon='info', timeout=5):
 
         self.nm += 1
         print(f'(\033[92mnotification\033[m) notify count: {self.nm}')
 
-        name = f'Sound Tagger - {app_title}' if app_title != str() else 'Sound Tagger'
+        name = f'Sound Tagger - {app_title}' if app_title != '' else 'Sound Tagger'
 
         try:
             notification.notify(

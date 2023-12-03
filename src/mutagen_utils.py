@@ -164,7 +164,7 @@ class MU(QObject):
         print(f'(\033[92mmutagen_utils\033[m) {media}')
 
         for tag in edit:
-            if tag[0].text() != str(): continue
+            if tag[0].text() != '': continue
 
             try:
 
