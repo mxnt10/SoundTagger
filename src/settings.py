@@ -25,15 +25,15 @@ class Settings(QWidget):
         for i in self.settings.load_priorities_API().split(':'):
             self.list_widget.addItem(QListWidgetItem(i))
 
-        self.list_widget.model().rowsMoved.connect(self.onCurrentRowChanged)
+        self.list_widget.model().rowsMoved.connect(self.on_current_row_changed)
 
         # Configuração das APIs
         self.audd_api = Form(self.tr('audD API Token'), min_size=110, d='')
         self.audd_api.setText(str(self.settings.load_api_key('audD_API')))
-        self.audd_api.changeText.connect(lambda val: self.changeValues('audD_API', val))
+        self.audd_api.changeText.connect(lambda val: self.change_values('audD_API', val))
         self.acoustid_api = Form(self.tr('AcoustID API Key'), min_size=110, d='')
         self.acoustid_api.setText(str(self.settings.load_api_key('acoustID_API')))
-        self.acoustid_api.changeText.connect(lambda val: self.changeValues('acoustID_API', val))
+        self.acoustid_api.changeText.connect(lambda val: self.change_values('acoustID_API', val))
 
         # Label
         priority_text = QLabel(self.tr('Priority'))
@@ -42,9 +42,9 @@ class Settings(QWidget):
 
         # Botões
         audd_clean = Button("remove-list", size=38)
-        audd_clean.clicked.connect(lambda: self.cleanValues('audD_API'))
+        audd_clean.clicked.connect(lambda: self.clean_values('audD_API'))
         acoustid_clean = Button("remove-list", size=38)
-        acoustid_clean.clicked.connect(lambda: self.cleanValues('acoustID_API'))
+        acoustid_clean.clicked.connect(lambda: self.clean_values('acoustID_API'))
 
         # Layout para a lista de prioridade e APIs
         list_layout = HBoxLayout(array_widgets=[priority_text, self.list_widget, 'S'])
@@ -60,13 +60,13 @@ class Settings(QWidget):
 ########################################################################################################################
 
     # Alterar as configurações das chaves de APIS
-    def changeValues(self, key, text):
+    def change_values(self, key, text):
         if self.settings.load_api_key(key) == text:
             return
         self.settings.save_api_key(key, text)
 
     # Limpando as configurações das chaves de APIS
-    def cleanValues(self, key):
+    def clean_values(self, key):
         if key == 'audD_API':
             self.audd_api.set_text('')
             return
@@ -74,6 +74,6 @@ class Settings(QWidget):
             self.acoustid_api.set_text('')
 
     # Salvando a lista de prioridade das APIs
-    def onCurrentRowChanged(self) -> None:
+    def on_current_row_changed(self) -> None:
         order = ":".join([self.list_widget.item(i).text() for i in range(self.list_widget.count())])
         self.settings.save_priorities_API(order)
