@@ -45,7 +45,7 @@ class SoundTaggerApp(QMainWindow):
         self.run_options = RunOptions(self)
         self.list_widget = ListWidget()
         self.list_widget.set_notificator(self.notify)
-        self.list_widget.setWidgetEvent(self.run_options)
+        self.list_widget.set_widget_event(self.run_options)
         self.list_widget.added.connect(lambda: self.buttons.active_buttons())
         self.list_widget.removed.connect(lambda: self.buttons.deactive_buttons())
         self.list_widget.show_tag.connect(self.active_tags)
@@ -121,9 +121,9 @@ class SoundTaggerApp(QMainWindow):
 
     # Ativar edição de tags
     def active_tags(self, n) -> None:
-        self.edit_tools.setFile(self.list_widget.item(n, __FILES__).text())
+        self.edit_tools.set_file(self.list_widget.item(n, __FILES__).text())
         if self.tagedit.isHidden():
-            if self.edit_tools.isFileSupported():
+            if self.edit_tools.is_file_supported():
                 self.tagedit.setVisible(True)
             else:
                 self.tagedit.setVisible(False)
