@@ -46,7 +46,6 @@ class audDAPI(QObject):
         except Exception as msg:
             self.finished.emit({}, row)
             notificator.notify_send(app_title=self.tr('Error'),
-                                    title=str(),
                                     message=str(msg),
                                     icon='error',
                                     timeout=10)
