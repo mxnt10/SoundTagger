@@ -26,5 +26,5 @@ class IconPrg(QObject):
                 return alt_icon
             return QIcon(alt_icon)
         if string:
-            return str()
+            return ''
         return QIcon()
