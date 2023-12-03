@@ -18,7 +18,7 @@ __CLK_ALPHA__ = 200
 class Button(QPushButton):
     height = pyqtSignal(QPoint)
 
-    def __init__(self, text, tooltip=str(), size=__SIZE__, ajust=__AJUST__, select=__SELECT__, click=__CLICK__):
+    def __init__(self, text, tooltip='', size=__SIZE__, ajust=__AJUST__, select=__SELECT__, click=__CLICK__):
         self.text = text
         self.nm = size
         self.sel = select
