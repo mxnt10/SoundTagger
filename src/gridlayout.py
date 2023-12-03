@@ -16,7 +16,7 @@ class GridLayout(QGridLayout):
 
         border = f' border: 1px solid {t.color_palette(QPalette.Light)};'
         if on_border is False:
-            border = str()
+            border = ''
 
         style = f'background-color: {t.color_palette(QPalette.Window)}; border-radius: {radius}px;{border}'
 
