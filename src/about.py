@@ -63,20 +63,20 @@ class About(QWidget):
 
         f = int(self.size().height() / 50)
         if 12 < f < 19:
-            self.label.setPointSize(f)
+            self.label.set_point_size(f)
         elif f < 19:
-            self.label.setPointSize(12)
+            self.label.set_point_size(12)
 
         if f > 15:
             for i in self.it:
                 if i == self.label:
                     continue
                 if isinstance(i, LabelLayout):
-                    i.setPointSize(11)
+                    i.set_point_size(11)
         else:
             q = QFontDatabase.systemFont(QFontDatabase.GeneralFont).pointSize()
             for i in self.it:
                 if i == self.label:
                     continue
                 if isinstance(i, LabelLayout):
-                    i.setPointSize(q)
+                    i.set_point_size(q)
