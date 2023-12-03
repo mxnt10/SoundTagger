@@ -53,7 +53,7 @@ class Theme(QObject):
     @staticmethod
     def applyAutoMode() -> None:
 
-        darkTheme = (
+        dark_theme = (
             [QPalette.Window, QColor(42, 46, 50)],
             [QPalette.WindowText, QColor(232, 232, 232)],
             [QPalette.Base, QColor(27, 30, 32)],
@@ -76,7 +76,7 @@ class Theme(QObject):
             [QPalette.LinkVisited, QColor(155, 89, 182)],
         )
 
-        lightTheme = (
+        light_theme = (
             [QPalette.Window, QColor(239, 240, 241)],
             [QPalette.WindowText, QColor(35, 38, 41)],
             [QPalette.Base, QColor(255, 255, 255)],
@@ -100,10 +100,10 @@ class Theme(QObject):
 
         p = QPalette()
         if p.color(QPalette.Window) == QColor(42, 46, 50):
-            for c in darkTheme:
+            for c in dark_theme:
                 p.setColor(c[0], c[1])
         elif p.color(QPalette.Window) == QColor(239, 240, 241):
-            for c in lightTheme:
+            for c in light_theme:
                 p.setColor(c[0], c[1])
 
         QApplication.setStyle(QStyleFactory.create('Breeze'))
