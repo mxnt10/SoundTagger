@@ -24,7 +24,7 @@ class editTags(QWidget):
         genre = Form(self.tr('Genre'))
         date = Form(self.tr('Date'))
         first_track = Form(self.tr('Track'), orig=True)
-        end_track = Form('/', orig=True, d=str(), space=7)
+        end_track = Form('/', orig=True, d='', space=7)
         composer = Form(self.tr('Composer'))
         copy = Form(self.tr('Copyright'))
         encoded = Form(self.tr('Encoded by'))
