@@ -17,18 +17,23 @@ class editTools(QWidget):
         super().__init__()
         self.selected_change = None
 
+        # Widgets dos botões
+        self.btn = QWidget()
+
+        # Widgets para editar as tags
         self.tag = editTags()
+        self.tag.visible.connect(lambda: self.btn.setVisible(True))
 
         self.tab = QTabWidget()
         self.tab.setFocusPolicy(Qt.NoFocus)
         self.tab.addTab(self.tag, 'IdTags')
 
         apply = Button(text='apply', size=42, ajust=8, select=3, click=2)
-        apply.clicked.connect(self.setApply)
+        apply.clicked.connect(self.set_apply)
         cancel = Button(text='clean', size=42, ajust=8, select=3, click=2)
-        cancel.clicked.connect(self.setCancel)
+        cancel.clicked.connect(self.set_cancel)
 
-        buttons = HBoxLayout(array_widgets=[apply, cancel, 'S'], margin=3)
+        buttons = HBoxLayout(parent=self.btn, array_widgets=[apply, cancel, 'S'], margin=3)
 
         for i in range(buttons.count()):
             buttons.itemAt(i).setAlignment(Qt.AlignLeft)
@@ -55,27 +60,29 @@ class editTools(QWidget):
             f'}}'
         )
 
-        lay = VBoxLayout(array_widgets=[self.tab, buttons], margin=0)
+        lay = VBoxLayout(array_widgets=[self.tab, self.btn], margin=0)
         self.setLayout(lay)
 
 ########################################################################################################################
 
     # Setando arquivos de mídia no formulário para exibir as tags
-    def setFile(self, file) -> None:
-        self.tag.setFile(file)
+    def set_file(self, file) -> None:
+        self.tag.set_file(file)
         self.selected_change = file
 
     # Verificando suporte de arquivos de mídia recém importados
-    def isFileSupported(self):
-        return self.tag.isFileSupported()
+    def is_file_supported(self):
+        return self.tag.is_file_supported()
 
     # Aplicando alterações de tags
-    def setApply(self) -> None:
+    def set_apply(self) -> None:
         if self.tab.currentIndex() == 0:
-            self.tag.applyTags(self.selected_change)
+            self.tag.apply_tags(self.selected_change)
+            self.btn.setVisible(False)
 
     # Descartar alterações de tags
-    def setCancel(self) -> None:
+    def set_cancel(self) -> None:
         if self.tab.currentIndex() == 0:
             if self.selected_change is not None:
-                self.tag.setFile(self.selected_change)
+                self.tag.set_file(self.selected_change)
+                self.btn.setVisible(False)

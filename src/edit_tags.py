@@ -1,3 +1,4 @@
+from PyQt5.QtCore import pyqtSignal
 from PyQt5.QtWidgets import QWidget
 
 from form import Form
@@ -6,14 +7,16 @@ from mutagen_utils import MU
 from scrool_area import ScrollArea
 from vboxlayout import VBoxLayout
 
+
 ########################################################################################################################
 
 
 # A classe para edição das tags
 class editTags(QWidget):
+    visible = pyqtSignal()
+
     def __init__(self):
         super().__init__()
-        self.media = None
         self.support = False
         self.m = MU()
 
@@ -35,37 +38,31 @@ class editTags(QWidget):
         cd = Form(self.tr('Disc Number'), orig=True)
 
         self.general = (
-            [artist, 'artist'],               #
-            [title, 'title'],                 #
-            [album, 'album'],                 #
-            [cd, 'discnumber'],               # by easyTag
-            [cd, 'part'],                     # wavpack
-            [album_artist, 'albumartist'],    #
-            [album_artist, 'album_artist'],   # wavpack
-            [album_artist, 'album artist'],   # wavpack
-            [genre, 'genre'],                 #
-            [date, 'date'],                   #
-            [date, 'year'],                   # wavpack
-            [first_track, 'tracknumber'],     #
-            [first_track, 'track'],           # wavpack
-            [end_track, 'tracknumber'],       #
-            [end_track, 'track'],             # wavpack
-            [end_track, 'tracktotal'],        #
-            [composer, 'composer'],           #
-            [copy, 'copyright'],              #
-            [encoded, 'encodedby'],           #
-            [encoded, 'encoded_by'],          # wavpack
-            [encoded, 'encoded-by'],          # flac
-            [self.orig_artist, 'tope'],       # COMPATIBILIDADE
-            [self.orig_artist, 'performer'],  # flac
-            [comments, 'comment'],            #
-            [comments, 'description'],        # flac
-            [self.language, 'language'],      #
-            [url, 'contact'],                 # flac
-            [url, 'website']                  # opus
+            [artist, 'artist'],
+            [artist, 'performer'],
+            [title, 'title'],
+            [album, 'album'],
+            [cd, 'discnumber'],
+            [album_artist, 'albumartist'],
+            [genre, 'genre'],
+            [date, 'date'],
+            [first_track, 'tracknumber'],
+            [end_track, 'tracknumber'],
+            [end_track, 'tracktotal'],
+            [composer, 'composer'],
+            [copy, 'copyright'],
+            [encoded, 'encodedby'],
+            [encoded, 'encoded-by'],
+            [encoded, 'encoded_by'],
+            [self.orig_artist, 'originalartist'],
+            [self.orig_artist, 'tope'],
+            [comments, 'comment'],
+            [self.language, 'language'],
+            [url, 'website'],
+            [url, 'contact']
         )
 
-        self.aiffTag = (
+        self.mp3Tag = (
             [copy, 'TCOP'],                  # copyright
             [title, 'TIT2'],                 # título
             [artist, 'TPE1'],                # artista
@@ -125,19 +122,19 @@ class editTags(QWidget):
         self.asfTag = (
             [artist, 'Author'],
             [title, 'Title'],
-            [album, 'AlbumTitle'],
-            [album_artist, 'AlbumArtist'],
-            [first_track, 'TrackNumber'],
-            [end_track, 'TrackNumber'],
-            [composer, 'Composer'],
-            [genre, 'Genre'],
-            [self.orig_artist, 'OriginalArtist'],
-            [date, 'Year'],
-            [cd, 'PartOfSet'],
-            [self.language, 'Language'],
-            [url, 'AuthorURL'],
+            [album, 'WM/AlbumTitle'],
+            [album_artist, 'WM/AlbumArtist'],
+            [first_track, 'WM/TrackNumber'],
+            [end_track, 'WM/TrackNumber'],
+            [composer, 'WM/Composer'],
+            [genre, 'WM/Genre'],
+            [self.orig_artist, 'WM/OriginalArtist'],
+            [date, 'WM/Year'],
+            [cd, 'WM/PartOfSet'],
+            [self.language, 'WM/Language'],
+            [url, 'WM/AuthorURL'],
             [copy, 'Copyright'],
-            [encoded, 'EncodedBy'],
+            [encoded, 'WM/EncodedBy'],
             [comments, 'Description']
         )
 
@@ -183,49 +180,62 @@ class editTags(QWidget):
             self.orig_artist, copy, self.language, encoded, url, comments
         ]
 
+        # Executando uma ação ao alterar uma informação
+        for form in self.order:
+            form.changeText.connect(self.form_actions)
+
 ########################################################################################################################
 
     # Setando o arquivo para a leitura das tags
-    def setFile(self, file) -> None:
+    def set_file(self, file) -> None:
+        self.support = False
+
+        # Redefinindo os campos
         for tag in self.general:
-            tag[0].setText(str())
+            tag[0].setText('')
+            tag[0].clearFocus()
         self.orig_artist.setEnabled(True)
         self.language.setEnabled(True)
 
-        self.support = False
-        mime = self.m.isSupported(file)
-
+        mime = self.m.is_supported(file)
         if mime is not None:
-            if self.m.equal(mime, ['aiff', 'mp3', 'trueaudio', 'wave']):
-                self.m.getTags(mime, file, self.aiffTag)
+            if self.m.regex(mime, r'aiff|mp3|trueaudio|wave'):
+                self.m.get_tags(mime, file, self.mp3Tag)
             elif mime == 'mp4':
                 self.orig_artist.setEnabled(False)
                 self.language.setEnabled(False)
-                self.m.getTags(mime, file, self.mp4tag)
-            elif mime == 'monkeysaudio':
-                self.m.getTags(mime, file, self.apeTag)
+                self.m.get_tags(mime, file, self.mp4tag)
+            elif self.m.regex(mime, r'monkeysaudio|wavpack'):
+                self.m.get_tags(mime, file, self.apeTag)
             elif mime == 'asf':
-                self.m.getTags(mime, file, self.asfTag)
+                self.m.get_tags(mime, file, self.asfTag)
             elif mime == 'musepack':
-                self.m.getTags(mime, file, self.mpcTag)
+                self.m.get_tags(mime, file, self.mpcTag)
             else:
-                self.m.getTags(mime, file, self.general)
+                self.m.get_tags(mime, file, self.general)
 
             self.support = True
 
     # Verificando se o arquivo é suportado pelo mutagen
-    def isFileSupported(self):
+    def is_file_supported(self):
         return self.support
 
     # Gerar um arquivo de dicionário pra compatibilizar com a função para gravar as id tags nos arquivos de mídia
-    def generateDict(self):
+    def generate_dict(self):
         obj = {}
         i = 0
         for form in self.order:
-            obj[self.m.orderTags()[i]] = str(form.text())
+            obj[self.m.order_tags()[i]] = str(form.text())
             i += 1
         return obj
 
     # Gravando as id tags nos arquivos de mídia
-    def applyTags(self, file):
-        self.m.applyTags(mime=self.m.isSupported(file), file=file, keys=self.generateDict())
+    def apply_tags(self, file) -> None:
+        self.m.apply_tags(mime=self.m.is_supported(file), file=file, keys=self.generate_dict())
+
+    # Ação após editar algum campo do formulário das tags
+    def form_actions(self, txt):
+        _ = txt
+        if not self.support:
+            return
+        self.visible.emit()
