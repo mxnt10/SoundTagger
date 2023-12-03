@@ -46,10 +46,10 @@ class SoundTaggerApp(QMainWindow):
         self.list_widget = ListWidget()
         self.list_widget.set_notificator(self.notify)
         self.list_widget.setWidgetEvent(self.run_options)
-        self.list_widget.added.connect(lambda: self.buttons.activeButtons())
-        self.list_widget.removed.connect(lambda: self.buttons.deactiveButtons())
-        self.list_widget.show_tag.connect(self.activeTags)
-        self.list_widget.clean_selection.connect(self.deactiveTags)
+        self.list_widget.added.connect(lambda: self.buttons.active_buttons())
+        self.list_widget.removed.connect(lambda: self.buttons.deactive_buttons())
+        self.list_widget.show_tag.connect(self.active_tags)
+        self.list_widget.clean_selection.connect(self.deactive_tags)
         self.run_options.run.connect(self.list_widget.process_sounds)
 
         # Definição do editor de tag
@@ -86,9 +86,9 @@ class SoundTaggerApp(QMainWindow):
         self.buttons.control_clean.connect(self.list_widget.clear_items)
         self.buttons.control_point.connect(self.run_options.set_point)
         self.buttons.control_options.connect(self.show_options)
-        self.buttons.control_main.connect(lambda: self.changeStack(0))
-        self.buttons.control_settings.connect(lambda: self.changeStack(2))
-        self.buttons.control_about.connect(lambda: self.changeStack(1))
+        self.buttons.control_main.connect(lambda: self.change_stack(0))
+        self.buttons.control_settings.connect(lambda: self.change_stack(2))
+        self.buttons.control_about.connect(lambda: self.change_stack(1))
 
         # Layout principal
         main_layout = VBoxLayout(parent=main_widget)
@@ -120,7 +120,7 @@ class SoundTaggerApp(QMainWindow):
                                     icon='key')
 
     # Ativar edição de tags
-    def activeTags(self, n) -> None:
+    def active_tags(self, n) -> None:
         self.edit_tools.setFile(self.list_widget.item(n, __FILES__).text())
         if self.tagedit.isHidden():
             if self.edit_tools.isFileSupported():
@@ -129,12 +129,12 @@ class SoundTaggerApp(QMainWindow):
                 self.tagedit.setVisible(False)
 
     # Destivar edição de tags
-    def deactiveTags(self) -> None:
+    def deactive_tags(self) -> None:
         if self.run_options.isHidden():
             self.tagedit.setVisible(False)
 
     # Função pra alterar as interfaces do programa
-    def changeStack(self, n) -> None:
+    def change_stack(self, n) -> None:
         if n > 0:
             if not self.run_options.isHidden():
                 self.run_options.close()
