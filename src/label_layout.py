@@ -1,3 +1,4 @@
+from PyQt5.QtCore import QMargins
 from PyQt5.QtGui import QFont, QPalette
 from PyQt5.QtWidgets import QHBoxLayout, QLabel
 
@@ -10,7 +11,7 @@ class LabelLayout(QHBoxLayout):
 
         super().__init__()
         self.setSpacing(0)
-        self.setContentsMargins(0, 0, 0, 0)
+        self.setContentsMargins(QMargins())
 
         self.font = QFont()
         if self.pointsize > (-1):
@@ -39,7 +40,7 @@ class LabelLayout(QHBoxLayout):
             self.addWidget(self.label2)
 
     # Mudar o tamanho da fonte do label
-    def setPointSize(self, size) -> None:
+    def set_point_size(self, size) -> None:
         self.font.setPointSize(size)
         self.label1.setFont(self.font)
         if self.one is False:
