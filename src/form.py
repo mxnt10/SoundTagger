@@ -62,7 +62,7 @@ class Form(QHBoxLayout):
             )
 
             self.grid = GridLayout(margin=0, layout=self.form)
-            self.grid.customStyle(
+            self.grid.custom_style(
                 f'QWidget {{'
                 f'    border: 1px solid {self.t.color_line()};'
                 f'    background-color: {self.t.color_palette(QPalette.Base)};'
@@ -73,8 +73,8 @@ class Form(QHBoxLayout):
                 f'}}'
             )
 
-            self.form.enterEvent = self.focusStyle
-            self.form.leaveEvent = self.customStyle
+            self.form.enterEvent = self.focus_style
+            self.form.leaveEvent = self.custom_style
 
             self.addLayout(self.grid)
 
@@ -92,9 +92,9 @@ class Form(QHBoxLayout):
     def setEnabled(self, bol) -> None:
         self.form.setEnabled(bol)
 
-    def focusStyle(self, event) -> None:
+    def focus_style(self, event) -> None:
         _ = event
-        self.grid.customStyle(
+        self.grid.custom_style(
             f'QWidget {{'
             f'    border: 1px solid {self.t.color_rgba(QPalette.Highlight, self.t.__LINE__)};'
             f'    background-color: {self.t.color_palette(QPalette.Base)};'
@@ -105,9 +105,9 @@ class Form(QHBoxLayout):
             f'}}'
         )
 
-    def customStyle(self, event) -> None:
+    def custom_style(self, event) -> None:
         _ = event
-        self.grid.customStyle(
+        self.grid.custom_style(
             f'QWidget {{'
             f'    border: 1px solid {self.t.color_line()};'
             f'    background-color: {self.t.color_palette(QPalette.Base)};'
