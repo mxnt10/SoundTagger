@@ -7,7 +7,7 @@ from icon import IconPrg
 from label_layout import LabelLayout
 from vboxlayout import VBoxLayout
 
-VERSION = '23.08.28'
+VERSION = '23.12.03'
 
 # Software que usa uma API de impressão digital acústica para buscar metadados
 # de arquivos multimídia como artista, título e álbum.
