@@ -3,7 +3,7 @@ import tempfile
 from PyQt5.QtCore import pyqtSignal, QObject
 
 from acoustid_api import AcoustIDAPI
-from audd_api import audDAPI
+from auddapi import audDAPI
 from pydub import AudioSegment
 from pydub.exceptions import CouldntDecodeError
 from settings_manager import SettingsManager
