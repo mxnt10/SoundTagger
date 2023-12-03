@@ -17,7 +17,6 @@ from theme import Theme
 from vboxlayout import VBoxLayout
 from worker import Worker, SharedClass
 
-
 ########################################################################################################################
 
 
@@ -242,13 +241,14 @@ class ListWidget(QTableWidget):
             title = normalized_keys.get('title')
             album = normalized_keys.get('album')
 
-            txt = str()
+            txt = ''
             if self.settings.load_int_convert_bool('file_addnum') is True:
-                if row < 9: txt = '0'
+                if row < 9:
+                    txt = '0'
                 txt += str(row + 1)
                 txt += ' - '
 
-            text = str()
+            text = ''
             if artist:
                 text = str(artist)
             if title:
@@ -266,9 +266,9 @@ class ListWidget(QTableWidget):
             file = self.item(row, __FILES__).text()
             if self.settings.load_int_convert_bool('file_tagger') is True:
                 mu = MU()
-                mime = mu.isSupported(file)
+                mime = mu.is_supported(file)
                 if mime is not None:
-                    mu.applyTags(mime=mime, file=file, keys=normalized_keys)
+                    mu.apply_tags(mime=mime, file=file, keys=normalized_keys)
 
             if self.settings.load_int_convert_bool('rename_file') is True:
                 rename = RenameUtils.rename_file(file, txt)
@@ -318,7 +318,7 @@ class ListWidget(QTableWidget):
             thread_pool.clear()
 
     # Widget para fechar ao pressionar a interface atual
-    def setWidgetEvent(self, widget) -> None:
+    def set_widget_event(self, widget) -> None:
         self.widget_event = widget
 
     def index_row(self):
