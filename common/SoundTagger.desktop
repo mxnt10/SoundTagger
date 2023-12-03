@@ -1,0 +1,15 @@
+[Desktop Entry]
+
+Type=Application
+Version=1.0
+
+Name=SoundTagger
+
+Comment=Multimedia Tags Editor
+
+Exec=SoundTagger
+Icon=SoundTagger
+
+Terminal=false
+
+Categories=Audio;Video;AudioVideo;
