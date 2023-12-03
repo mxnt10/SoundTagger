@@ -30,7 +30,7 @@ class Button(QPushButton):
         super().__init__()
         self.icon = self.set_icon(self.text)
 
-        self.setIcon(self.contrastIcon(self.icon, self.nm))
+        self.setIcon(self.contrast_icon(self.icon, self.nm))
         self.setIconSize(QSize(self.nm, self.nm))
         self.setFixedSize(self.nm - ajust, self.nm - ajust)
         self.setToolTip(tooltip)
@@ -47,7 +47,7 @@ class Button(QPushButton):
 
     # Função para buscar ícones alternativos, caso inexistente
     @staticmethod
-    def defaultIcon(txt):
+    def default_icon(txt):
         if txt == 'add':
             return QIcon.fromTheme('list-add')
         if txt == 'remove':
@@ -77,10 +77,10 @@ class Button(QPushButton):
             return QIcon(f'{self.rel_icon}/{txt}.{ext}')
         if os.path.exists(f'{self.alt_icon}/{txt}.{ext}'):
             return QIcon(f'{self.alt_icon}/{txt}.{ext}')
-        return self.defaultIcon(txt)
+        return self.default_icon(txt)
 
     # Ajuste do contraste do ícone conforme o tema
-    def contrastIcon(self, icon, size, alpha=__ALPHA__):
+    def contrast_icon(self, icon, size, alpha=__ALPHA__):
         themed_pixmap = QPixmap(size, size)
         themed_pixmap.fill(Qt.transparent)
 
@@ -102,27 +102,27 @@ class Button(QPushButton):
 
     # Ação ao posicionar o mouse sobre o botão
     def enterEvent(self, event: QEvent) -> None:
-        self.setIcon(self.contrastIcon(self.icon, self.nm + self.sel, alpha=__CLK_ALPHA__))
+        self.setIcon(self.contrast_icon(self.icon, self.nm + self.sel, alpha=__CLK_ALPHA__))
         self.setIconSize(QSize(self.nm + self.sel, self.nm + self.sel))
         self.height.emit(self.pos())
         super().enterEvent(event)
 
     # Ação ao tirar o mouse sobre o botão
     def leaveEvent(self, event: QEvent) -> None:
-        self.setIcon(self.contrastIcon(self.icon, self.nm))
+        self.setIcon(self.contrast_icon(self.icon, self.nm))
         self.setIconSize(QSize(self.nm, self.nm))
         super().leaveEvent(event)
 
     # Ação ao pressionar o botão
     def mousePressEvent(self, event: QMouseEvent) -> None:
         if event.button() == 1:
-            self.setIcon(self.contrastIcon(self.icon, self.nm + self.clk, alpha=__CLK_ALPHA__))
+            self.setIcon(self.contrast_icon(self.icon, self.nm + self.clk, alpha=__CLK_ALPHA__))
             self.setIconSize(QSize(self.nm + self.clk, self.nm + self.clk))
         super().mousePressEvent(event)
 
     # Ação ao despressionar o botão representando um clique completo
     def mouseReleaseEvent(self, event: QMouseEvent) -> None:
         if event.button() == 1:
-            self.setIcon(self.contrastIcon(self.icon, self.nm + self.sel, alpha=__CLK_ALPHA__))
+            self.setIcon(self.contrast_icon(self.icon, self.nm + self.sel, alpha=__CLK_ALPHA__))
             self.setIconSize(QSize(self.nm + self.sel, self.nm + self.sel))
         super().mouseReleaseEvent(event)
